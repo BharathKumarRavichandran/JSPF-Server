@@ -1,0 +1,32 @@
+{
+	"parser": "babel-eslint",
+	"env": {
+		"browser": true,
+		"commonjs": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"airbnb"
+	],
+	"parserOptions": {
+		"ecmaVersion": 6,
+		"sourceType": "module"
+	},
+	"plugins": [],
+	"rules": {
+		"no-console": "off",
+		"indent": [
+			2,
+			"tab",
+			{
+				"SwitchCase": 1,
+				"VariableDeclarator": 1
+			}
+		],
+		"quotes": [
+			"error",
+			"single"
+		]
+	}
+}
