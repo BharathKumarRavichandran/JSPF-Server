@@ -26,7 +26,7 @@ exports.sendVerificationCode = async (req, res) => {
         }
         let student = new Student();
         student.email = email;
-        student.verificationCode = await randomstring.generate(6);
+        student.verificationCode = randomstring.generate(6);
         student.isVerified1 = false;
         
         let mailResponse = await sendgridMailUtil.sendVerificationCode(student.email,student.verificationCode);
@@ -80,7 +80,7 @@ exports.reSendVerificationCode = async (req, res) => {
     }
 }
 
-exports.verifyEmail = async (req, res) => {
+exports.checkVerificationCode = async (req, res) => {
     try{
         if(!req.body.email || !validator.isEmail(req.body.email) || !req.body.verificationCode){
             throw Error('Invalid parameters');
@@ -93,7 +93,7 @@ exports.verifyEmail = async (req, res) => {
             verificationCode: verificationCode
         }).exec();
         if(!student){
-            throw Error('Incorrect verification code.');
+            throw Error('Please check your email and verification code.');
         }
 
         res.status(200).json({
@@ -199,7 +199,7 @@ exports.verifyInstiEmail = async (req, res) => {
             isVerified2: false
         }).exec();
         if(!student){
-            throw Error('Incorrect verification code.');
+            throw Error('Please check your email and verification code.');
         }
         
         student.isVerified2 = true;
@@ -220,11 +220,70 @@ exports.verifyInstiEmail = async (req, res) => {
 }
 
 exports.forgotPassword = async (req, res) => {
-
+    try{
+        if(!req.body.email || !validator.isEmail(req.body.email)){
+            throw Error('Invalid parameters');
+        }
+        const email = req.body.email;
+        let student = await Student.findOne({email: email}).exec();
+        if(!student){
+            throw Error(`Email doesn't exists!`);
+        }
+        student.verificationCode = randomstring.generate(6);
+        
+        let mailResponse = await sendgridMailUtil.sendPasswordVerificationCode(student.email,student.verificationCode);
+        if(mailResponse.status_code!=200){
+            throw Error(mailResponse.message);
+        }
+        
+        await student.save();
+        
+        return res.json({
+            status_code: 200,
+            message: `An email with verification code has been sent to your email: ${student.email}`
+        });
+    } catch(error){
+        return res.status(400).json({
+            status_code: 400,
+            message: error.toString()
+        });
+    }
 }
 
 exports.resetPassword = async (req, res) => {
+    try{
+        if(!req.body.email || !req.body.verificationCode || !req.body.password || !req.body.confirmPassword || !validator.isEmail(req.body.email)){
+            throw Error('Invalid parameters');
+        }
+        const email = req.body.email;
+        let student = await Student.findOne({email: email, verificationCode: req.body.verificationCode}).exec();
+        if(!student){
+            throw Error(`Please check your email and verification code.`);
+        }
 
+        let password = req.body.password;
+        let confirmPassword = req.body.confirmPassword;
+        
+        if( !(password==confirmPassword) || (password.length<8) )
+            throw Error('Password Mismatch or Invalid password.');
+
+        password = await passwordUtil.hashPassword(password);
+        student.password = password;
+        // Changing verification code after changing password
+        student.verificationCode = randomstring.generate(6);
+        
+        await student.save();
+        
+        return res.json({
+            status_code: 200,
+            message: `Password successfully reset.`
+        });
+    } catch(error){
+        return res.status(400).json({
+            status_code: 400,
+            message: error.toString()
+        });
+    }
 }
 
 exports.registerStudent = async (req, res) => {
