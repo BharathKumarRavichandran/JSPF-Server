@@ -3,7 +3,6 @@ exports.checkFormSubmission = (student) => {
         student.email &&
         student.instiEmail &&
         student.verificationCode &&
-        student.instiVerificationCode &&
         student.isVerified1 &&
         student.isVerified2 &&
         student.applicationNumber &&
