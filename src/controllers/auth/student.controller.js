@@ -113,6 +113,9 @@ exports.sendInstiVerificationCode = async (req, res) => {
         if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail)){
             throw Error('Invalid parameters');
         }
+        if(!registerUtil.checkEduEmail(req.body.instiEmail)){
+            throw Error('Please enter a valid institute(.edu) email address');
+        }
 
         const email = req.session.student.email;
         const instiEmail = sanitize(req.body.instiEmail);
@@ -149,6 +152,9 @@ exports.reSendInstiVerificationCode = async (req, res) => {
     try{
         if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail)){
             throw Error('Invalid parameters');
+        }
+        if(!registerUtil.checkEduEmail(req.body.instiEmail)){
+            throw Error('Please enter a valid institute(.edu) email address');
         }
 
         const email = req.session.student.email;
@@ -187,6 +193,9 @@ exports.verifyInstiEmail = async (req, res) => {
     try{
         if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail) || !req.body.verificationCode){
             throw Error('Invalid parameters');
+        }
+        if(!registerUtil.checkEduEmail(req.body.instiEmail)){
+            throw Error('Please enter a valid institute(.edu) email address');
         }
 
         const email = req.session.student.email;
