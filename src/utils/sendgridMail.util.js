@@ -36,3 +36,40 @@ exports.sendVerificationCode = async (recipientEmail,verificationCode) => {
         }
     }
 }
+
+exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) => {
+    try {
+        const message = {
+            from: config.email.SITE_NOREPLY_EMAIL,
+            to: recipientEmail,
+            subject: 'Jitheshraj Scholarship Password Reset Verification Code',
+            html: `
+                <div>
+                    <div>Hi !</div>
+                    <br/>
+                    <div>You have requested for a password reset.</div>
+                    <br/>
+                    <div><strong>If this was you:</strong></div>
+                    <div>Great! There's nothing else you need to do.</div>
+                    <br/>
+                    <div><strong>Verification code: ${verificationCode}</strong></div>
+                    <br/>
+                    <div>Email info@jrscholarship.org if you have any questions.</div>
+                    <br/>
+                    <div>Regards,</div>
+                    <div>Team JSPF</div>
+                </div>
+            `,
+        };
+        let mail = await sgMail.send(message);
+        return {
+            status_code: 200,
+            message: `Success`
+        }
+    } catch(error){
+        return {
+            status_code: 400,
+            message: error.toString()
+        }
+    }
+}
