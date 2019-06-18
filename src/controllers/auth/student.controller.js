@@ -123,10 +123,10 @@ exports.sendInstiVerificationCode = async (req, res) => {
 
         let student = await Student.findOne({email: email}).exec();
         student.instiEmail = instiEmail;
-        student.instiVerificationCode = randomstring.generate(6);
+        student.verificationCode = randomstring.generate(6);
         student.isVerified2 = false;
         
-        let mailResponse = await sendgridMailUtil.sendVerificationCode(student.instiEmail,student.instiVerificationCode);
+        let mailResponse = await sendgridMailUtil.sendVerificationCode(student.instiEmail,student.verificationCode);
         if(mailResponse.status_code!=200){
             throw Error(mailResponse.message);
         }
@@ -161,10 +161,10 @@ exports.reSendInstiVerificationCode = async (req, res) => {
             throw Error('Sorry, this email is not registered.');
         }
 
-        student.instiVerificationCode = randomstring.generate(6);
+        student.verificationCode = randomstring.generate(6);
         student.isVerified2 = false;
         
-        let mailResponse = await sendgridMailUtil.sendVerificationCode(student.instiEmail,student.instiVerificationCode);
+        let mailResponse = await sendgridMailUtil.sendVerificationCode(student.instiEmail,student.verificationCode);
         if(mailResponse.status_code!=200){
             throw Error(mailResponse.message);
         }
@@ -185,17 +185,17 @@ exports.reSendInstiVerificationCode = async (req, res) => {
 
 exports.verifyInstiEmail = async (req, res) => {
     try{
-        if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail) || !req.body.instiVerificationCode){
+        if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail) || !req.body.verificationCode){
             throw Error('Invalid parameters');
         }
 
         const email = req.session.student.email;
         const instiEmail = req.body.instiEmail;
-        const instiVerificationCode = req.body.instiVerificationCode;
+        const verificationCode = req.body.verificationCode;
         const student = await Student.findOne({
             email: email, 
             instiEmail: instiEmail,
-            instiVerificationCode: instiVerificationCode,
+            verificationCode: verificationCode,
             isVerified2: false
         }).exec();
         if(!student){
@@ -203,6 +203,8 @@ exports.verifyInstiEmail = async (req, res) => {
         }
         
         student.isVerified2 = true;
+        // Changing verification code after verification
+        student.verificationCode = randomstring.generate(6);
         await student.save();
         
         res.status(200).json({
@@ -249,6 +251,8 @@ exports.registerStudent = async (req, res) => {
         password = await passwordUtil.hashPassword(password);
         student.password = password;
         student.isVerified1 = true;
+        // Changing verification code after verification
+        student.verificationCode = randomstring.generate(6);
         student.personalInfo = {
             name: sanitize(req.body.name),
             rollNumber: sanitize(req.body.rollNumber),

@@ -16,14 +16,13 @@ const studentSchema = new mongoose.Schema({
 	verificationCode: {
 		type: String
 	},
-	instiVerificationCode: {
-		type: String
-	},
 	isVerified1: {
-		type: Boolean
+		type: Boolean,
+		default: false
 	},
 	isVerified2: {
-		type: Boolean
+		type: Boolean,
+		default: false
 	},
 	applicationNumber: {
 		type: String,
@@ -73,10 +72,6 @@ const studentSchema = new mongoose.Schema({
 		type: Boolean
 	},
 	createdAt : {
-		type: Date,
-		default: Date.now
-	},
-	updatedAt : {
 		type: Date,
 		default: Date.now
 	}
