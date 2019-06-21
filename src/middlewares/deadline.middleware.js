@@ -1,14 +1,14 @@
 // Importing config/env variables
 const config = require('../config/config');
 
-exports.sendToMentorsDeadline = () => {
+exports.sendToMentorsDeadline = async (req, res, next) => {
     try {
         const deadline = new Date(`${config.date.END_DATE_JS}`);
         const gap = deadline.getDate()-5;
         const dateNow = new Date();
         
         if(dateNow < gap){
-            next();
+            return next();
         }
 
         return res.status(400).json({
@@ -24,14 +24,14 @@ exports.sendToMentorsDeadline = () => {
     }
 }
 
-exports.finalProjectDeadline = () => {
+exports.finalProjectDeadline = async (req, res, next) => {
     try {
         const deadline = new Date(`${config.date.END_DATE_JS}`);
         const gap = deadline.getDate()-30;
         const dateNow = new Date();
         
         if(dateNow > gap){
-            next();
+            return next();
         }
 
         return res.status(400).json({
