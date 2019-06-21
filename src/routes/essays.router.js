@@ -10,9 +10,9 @@ router.post('/mentors/community/upload', essayController.uploadCommunityToMentor
 router.post('/mentors/society/upload', essayController.uploadSocietyToMentors);
 
 // Final essays upload routes
-router.post('/final/sop/upload', essayController.uploadSOPFinal);
-router.post('/final/community/upload', essayController.uploadCommunityFinal);
-router.post('/final/society/upload', essayController.uploadSocietyFinal);
+router.post('/final/sop/upload', essayController.uploadFinalSOP);
+router.post('/final/community/upload', essayController.uploadFinalCommunity);
+router.post('/final/society/upload', essayController.uploadFinalSociety);
 router.post('/final/view/all', essayController.viewFinalEssays);
 
 module.exports = router;
