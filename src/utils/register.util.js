@@ -21,7 +21,3 @@ exports.checkEmptyInput = (req) => {
 exports.checkEduEmail = (email) => {
     return (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$/).test(email);
 }
-
-exports.initializeModel = (student) => {
-    
-}

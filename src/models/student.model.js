@@ -29,52 +29,104 @@ const studentSchema = new mongoose.Schema({
 		unique: true
 	},
 	personalInfo: {
-		name: String,
-		rollNumber: String,
-		department: String,
-		contactNumberCall: String,
-		contactNumberWhatsapp: String,
+		name: {
+			type: String,
+			default: null
+		},
+		rollNumber: {
+			type: String,
+			default: null
+		},
+		department: {
+			type: String,
+			default: null
+		},
+		contactNumberCall: {
+			type: String,
+			default: null
+		},
+		contactNumberWhatsapp: {
+			type: String,
+			default: null
+		},
 		tshirtSize: {
 			type: String,
 			enum: ['XS','S','M','L','XL','XXL','XXXL']
 		},
-		introduction: String
+		introduction: {
+			type: String,
+			default: null
+		}
 	},
 	certificates: {
-		gradeSheetSem1: String,
-		instiCertificate: String,
-		nonInstiCertificate: String,
-		gradeSheetMOOC: String
+		gradeSheetSem1: {
+			type: String,
+			default: null
+		},
+		instiCertificate: {
+			type: String,
+			default: null
+		},
+		nonInstiCertificate: {
+			type: String,
+			default: null
+		},
+		gradeSheetMOOC: {
+			type: String,
+			default: null
+		}
 	},
 	abstract: {
-		docLink: String,
-		projectAbstract: String,
+		docLink: {
+			type: String,
+			default: null
+		},
+		projectAbstract: {
+			type: String,
+			default: null
+		},
 		supportingFiles: {
 			type: Array
 		}
 	},
 	essays: {
 		mentors: {
-			sop: String,
-			community: String,
-			society: String
+			sop: {
+				type: String,
+				default: null
+			},
+			community: {
+				type: String,
+				default: null
+			},
+			society: {
+				type: String,
+				default: null
+			}
 		},
 		final: {
-			sop: String,
-			community: String,
-			society: String
+			sop: {
+				type: String,
+				default: null
+			},
+			community: {
+				type: String,
+				default: null
+			},
+			society: {
+				type: String,
+				default: null
+			}
 		}
 	},
 	signature: {
-		type: String
+		type: String,
+		default: null
 	},
 	isSubmitted: {
-		type: Boolean
-	},
-	createdAt : {
-		type: Date,
-		default: Date.now
+		type: Boolean,
+		default: false
 	}
-});
+},{timestamps: true});
 
 module.exports = mongoose.model('Student', studentSchema);

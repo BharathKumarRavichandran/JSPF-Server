@@ -1,6 +1,7 @@
+const mkdirp = require('mkdirp');
+const path = require('path');
 const randomstring = require('randomstring');
 const sanitize = require('mongo-sanitize');
-const signale = require('signale');
 const validator = require('validator');
 
 // Importing config/env variables
@@ -210,12 +211,15 @@ exports.verifyInstiEmail = async (req, res) => {
         if(!student){
             throw Error('Please check your email and verification code.');
         }
+
+        // Creating directory for the student
+        await mkdirp(path.join(config.directory.UPLOADS_DIR,student.applicationNumber));
         
         student.isVerified2 = true;
         // Changing verification code after verification
         student.verificationCode = randomstring.generate(6);
         await student.save();
-        
+
         res.status(200).json({
             status_code: 200,
             message: 'Success'
