@@ -1,3 +1,9 @@
+const path = require('path');
+
+
+// Declaring globals
+const BASE_DIR = __dirname+'/./../../';
+
 require('dotenv').config(
     { 
         path: __dirname+'/./../../.env' 
@@ -19,6 +25,11 @@ module.exports = {
 		END_DATE_JS: process.env.END_DATE_JS,
 		START_YEAR: process.env.START_YEAR,
 		END_YEAR: process.env.END_YEAR
+	},
+	directory: {
+		BASE_DIR:  BASE_DIR,
+		UPLOADS_DIR: path.join(BASE_DIR,'storage','uploads'),
+		LOGS_DIR: path.join(BASE_DIR,'storage','uploads')
 	},
 	key: {
 		SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
