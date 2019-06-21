@@ -1,4 +1,3 @@
-const formidable = require('formidable');
 const path = require('path');
 const multer = require('multer');
 const util = require('util');
@@ -15,7 +14,7 @@ class Uploader {
         const storageOptions = multer.diskStorage({
             destination: path.join(config.directory.UPLOADS_DIR,applicationNumber),
             filename: function (req, file, cb) {
-                cb(null, fileOptions.fileName + path.extname(file.originalname));
+                cb(null, fileOptions.fileName + '_' + Date.now() + path.extname(file.originalname));
             },
             onError : function(error, next) {
                 return {

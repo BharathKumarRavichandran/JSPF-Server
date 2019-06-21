@@ -1,4 +1,5 @@
 const path = require('path');
+const randomstring = require('randomstring');
 
 // Importing models
 const Student = require('../models/student.model');
@@ -33,7 +34,7 @@ exports.uploadFinalAbstract = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'projectAbstract';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -67,7 +68,7 @@ exports.uploadSupportingFiles = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'supportingFiles';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -82,7 +83,12 @@ exports.uploadSupportingFiles = async (req, res) => {
         let uploadResponse = await fileUploader.uploadMulti(req,res,fieldDetails);
 
         if(uploadResponse.status_code==200){
-            student.abstract.supportingFiles = uploadResponse.data.files;
+            var locationArray = new Array();
+            for(let i=0;i<fieldDetails.maxCount;i++){
+                let location = path.join('uploads',student.applicationNumber,uploadResponse.data.files[i].filename);
+                locationArray.push(location);
+            }
+            student.abstract.supportingFiles = locationArray;
             await student.save();
         }
         

@@ -1,4 +1,5 @@
 const path = require('path');
+const randomstring = require('randomstring');
 
 // Importing models
 const Student = require('../models/student.model');
@@ -12,7 +13,7 @@ exports.uploadGradeSheetSem1 = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'gradeSheetSem1';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -46,7 +47,7 @@ exports.uploadInstiCertificate = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'instiCertificate';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -80,7 +81,7 @@ exports.uploadNonInstiCertificate = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'nonInstiCertificate';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -114,7 +115,7 @@ exports.uploadGradeSheetMOOC = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'gradeSheetMOOC';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,

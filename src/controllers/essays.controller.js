@@ -1,4 +1,5 @@
 const path = require('path');
+const randomstring = require('randomstring');
 
 // Importing models
 const Student = require('../models/student.model');
@@ -12,7 +13,7 @@ exports.uploadSOPToMentors = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'mentorsSOP';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -46,7 +47,7 @@ exports.uploadCommunityToMentors = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'mentorsCommunity';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -80,7 +81,7 @@ exports.uploadSocietyToMentors = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'mentorsSociety';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -114,7 +115,7 @@ exports.uploadFinalSOP = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'finalSOP';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -148,7 +149,7 @@ exports.uploadFinalCommunity = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'finalCommunity';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
@@ -182,7 +183,7 @@ exports.uploadFinalSociety = async (req, res) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         let fieldName = 'finalSociety';
-        let fileName = student.applicationNumber + '_' + fieldName + '_' + Date.now();
+        let fileName = student.applicationNumber + '_' + fieldName + '_' + randomstring.generate(4);
         const fileOptions = {
             fileName: fileName,
             fieldName: fieldName,
