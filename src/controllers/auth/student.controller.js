@@ -311,6 +311,9 @@ exports.registerStudent = async (req, res) => {
         if( !(password==confirmPassword) || (password.length<8) )
             throw Error('Password Mismatch or Invalid password.');
         
+        if(!passwordUtil.checkPasswordRule(password))
+            throw Error('Password must be atleast 8 characters in length and should contain 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.');
+
         const student = await Student.findOne({
             email: req.body.email, 
             verificationCode: req.body.verificationCode,
