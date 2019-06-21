@@ -27,10 +27,13 @@ exports.updateSignature = async (req, res, next) => {
 exports.getSignature = async (req, res, next) => {
     try{
         const email = req.session.student.email;
-        let student = await Student.findOne({email: email}).select('signature -_id').exec();
+        let student = await Student.findOne({email: email}).select('signature applicationNumber -_id').exec();
         return res.status(200).json({
             status_code: 200,
-            message: student
+            message: {
+                applicationNumber: student.applicationNumber,
+                signature: student.signature
+            }
         });
     } catch(error){
         return res.status(400).json({
