@@ -23,7 +23,7 @@ exports.uploadGradeSheetSem1 = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.gradeSheetSem1 = location;
             await student.save();
         }
@@ -57,7 +57,7 @@ exports.uploadInstiCertificate = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.instiCertificate = location;
             await student.save();
         }
@@ -91,7 +91,7 @@ exports.uploadNonInstiCertificate = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.nonInstiCertificate = location;
             await student.save();
         }
@@ -125,7 +125,7 @@ exports.uploadGradeSheetMOOC = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.gradeSheetMOOC = location;
             await student.save();
         }

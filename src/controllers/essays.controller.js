@@ -23,7 +23,7 @@ exports.uploadSOPToMentors = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.mentors.sop = location;
             await student.save();
         }
@@ -57,7 +57,7 @@ exports.uploadCommunityToMentors = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.mentors.community = location;
             await student.save();
         }
@@ -91,7 +91,7 @@ exports.uploadSocietyToMentors = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.mentors.society = location;
             await student.save();
         }
@@ -125,7 +125,7 @@ exports.uploadFinalSOP = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.final.sop = location;
             await student.save();
         }
@@ -159,7 +159,7 @@ exports.uploadFinalCommunity = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.final.community = location;
             await student.save();
         }
@@ -193,7 +193,7 @@ exports.uploadFinalSociety = async (req, res) => {
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
         if(uploadResponse.status_code==200){
-            let location = path.join(student.applicationNumber,uploadResponse.data.file.filename);
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.final.society = location;
             await student.save();
         }
