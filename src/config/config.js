@@ -1,20 +1,18 @@
+const dotenv = require('dotenv');
 const path = require('path');
 
 
 // Declaring globals
 const BASE_DIR = __dirname+'/./../../';
 
-require('dotenv').config(
-    { 
+dotenv.config(
+    {
+		debug: process.env.DEBUG,
         path: __dirname+'/./../../.env' 
-    },
-    { 
-        debug: process.env.DEBUG 
     }
-)
+);
 
 module.exports = {
-	CORS_ORIGIN: process.env.CORS_ORIGIN,
 	email: {
 		SITE_NOREPLY_EMAIL: process.env.SITE_NOREPLY_EMAIL
 	},
@@ -28,8 +26,9 @@ module.exports = {
 	},
 	directory: {
 		BASE_DIR:  BASE_DIR,
-		UPLOADS_DIR: path.join(BASE_DIR,'storage','uploads'),
-		LOGS_DIR: path.join(BASE_DIR,'storage','uploads')
+		CLIENT_BASE_DIR: process.env.CLIENT_BASE_DIR,
+		LOGS_DIR: path.join(BASE_DIR,'storage','logs'),
+		UPLOADS_DIR: process.env.DEBUG ? path.join(BASE_DIR,'public','uploads') : path.join(process.env.CLIENT_BASE_DIR,'public','uploads')
 	},
 	key: {
 		SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
@@ -44,7 +43,8 @@ module.exports = {
       secretString: process.env.SESSION_SECRET
 	},
 	url: {
-		API_URL: process.env.API_URL,
-		CLIENT_URL: process.env.CLIENT_URL
+		API_BASE_URL: process.env.API_BASE_URL,
+		CLIENT_BASE_URL: process.env.CLIENT_BASE_URL,
+		CORS_ORIGIN: process.env.CORS_ORIGIN
 	}
 };

@@ -23,7 +23,7 @@ const SESSION_SECRET = config.session.secretString;
 
 // Adding options for CORS middleware
 const corsOptions = {
-	origin: config.CORS_ORIGIN,
+	origin: config.url.CORS_ORIGIN,
 	methods: ['GET', 'PUT', 'POST', 'DELETE'],
 	credentials: true
 };
