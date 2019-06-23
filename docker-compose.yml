@@ -4,13 +4,19 @@ services:
 
   mongodb:
 	image: 'mongo'
+	container_name: JSPF-Mongo
 	volumes:
     - '/data/mongodb/db:/data/db'
 	ports:
 	- '27017:27017'
 
   server:
-	build: ./JSPF-Server/
+	build:
+		context: ./JSPF-Server
+		dockerfile: Dockerfile
+	container_name: JSPF-Server
+	env_file:
+	- .env
 	ports:
 	- '8000:8000'
 	links:
@@ -19,7 +25,12 @@ services:
 	- mongodb
 
   client:
-	build: ./JSPF-Web/
+	build:
+		context: ./JSPF-Web
+		dockerfile: Dockerfile
+	container_name: JSPF-Web
+	env_file:
+	- .env
 	ports:
 	- '3000:3000'
 	depends_on:
