@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+
+  mongodb:
+	image: 'mongo'
+	volumes:
+    - '/data/mongodb/db:/data/db'
+	ports:
+	- '27017:27017'
+
+  server:
+	build: ./JSPF-Server/
+	ports:
+	- '8000:8000'
+	links:
+	- mongodb
+	depends_on:
+	- mongodb
+
+  client:
+	build: ./JSPF-Web/
+	ports:
+	- '3000:3000'
+	depends_on:
+	- server
