@@ -8,7 +8,7 @@ const Student = require('../models/student.model');
 const Uploader = require('../utils/upload.util');
 
 
-exports.uploadDocLink = async (req, res) => {
+exports.sendDocLink = async (req, res) => {
     try{
         if(!req.body.docLink)
             throw('Invalid parameters');
