@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const sgMail = require('@sendgrid/mail');
 
 // Importing configuration/env variables
@@ -62,6 +64,51 @@ exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) =
             `,
         };
         let mail = await sgMail.send(message);
+        return {
+            status_code: 200,
+            message: `Success`
+        }
+    } catch(error){
+        return {
+            status_code: 400,
+            message: error.toString()
+        }
+    }
+}
+
+exports.sendApplicationSummary = async (recipientEmail,zipFilePath) => {
+    try {
+        let applicationSummaryPath = path.join(config.directory.PUBLIC_DIR,zipFilePath);
+        const message = {
+            from: config.email.SITE_NOREPLY_EMAIL,
+            to: recipientEmail,
+            subject: 'Jitheshraj Scholarship Application Summary',
+            html: `
+                <div>
+                    <div>Hi !</div>
+                    <br/>
+                    <div>Successfully received your application form for Jitheshraj Scholarship ${config.date.START_YEAR}-${config.date.END_YEAR}.</div>
+                    <br/>
+                    <div>A summary of your application is attached with the mail for your future reference.</div>
+                    <br/>
+                    <div>Email info@jrscholarship.org if you have any queries.</div>
+                    <br/>
+                    <div>Regards,</div>
+                    <div>Team JSPF</div>
+                </div>
+            `,
+            attachments: [
+                {
+                    content: fs.readFileSync(applicationSummaryPath,{ encoding: "base64" }),
+                    filename: 'JSPF-Application.zip',
+                    type: 'application/zip',
+                    disposition: 'attachment',
+                    contentId: 'JSPF-Application'
+                },
+            ],
+        };
+        let mail = await sgMail.send(message);
+
         return {
             status_code: 200,
             message: `Success`
