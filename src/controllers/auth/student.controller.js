@@ -97,12 +97,12 @@ exports.checkVerificationCode = async (req, res) => {
             throw Error('Please check your email and verification code.');
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             status_code: 200,
             message: 'Success'
         });
     } catch(error){
-        res.status(400).json({
+        return res.status(400).json({
             status_code: 400,
             message: error.toString()
         });
@@ -220,12 +220,12 @@ exports.verifyInstiEmail = async (req, res) => {
         student.verificationCode = randomstring.generate(6);
         await student.save();
 
-        res.status(200).json({
+        return res.status(200).json({
             status_code: 200,
             message: 'Success'
         });
     } catch(error){
-        res.status(400).json({
+        return res.status(400).json({
             status_code: 400,
             message: error.toString()
         });
@@ -279,6 +279,9 @@ exports.resetPassword = async (req, res) => {
         
         if( !(password==confirmPassword) || (password.length<8) )
             throw Error('Password Mismatch or Invalid password.');
+
+        if(!passwordUtil.checkPasswordRule(password))
+            throw Error('Password must be atleast 8 characters in length and should contain 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.');
 
         password = await passwordUtil.hashPassword(password);
         student.password = password;

@@ -1,5 +1,6 @@
 const path = require('path');
 const randomstring = require('randomstring');
+const sanitize = require('mongo-sanitize');
 
 // Importing models
 const Student = require('../models/student.model');
@@ -17,12 +18,12 @@ exports.sendDocLink = async (req, res) => {
         const student = await Student.findOne({email: email}).exec();
         student.abstract.docLink = docLink;
         await student.save();
-        res.status(200).json({
+        return res.status(200).json({
             status_code: 200,
             message: `Successfully saved abstract's doc link`
         });
     } catch(error){
-        res.status(400).json({
+        return res.status(400).json({
             status_code: 400,
             message: error.toString()
         });
@@ -109,7 +110,7 @@ exports.viewAbstract = async (req, res) => {
     try{
         const email = req.session.student.email;
         const student = await Student.findOne({email: email}).select('abstract applicationNumber -_id').exec();
-        res.status(200).json({
+        return res.status(200).json({
             status_code: 200,
             message: {
                 applicationNumber: student.applicationNumber,
@@ -117,7 +118,7 @@ exports.viewAbstract = async (req, res) => {
             }
         });
     } catch(error){
-        res.status(400).json({
+        return res.status(400).json({
             status_code: 400,
             message: error.toString()
         });

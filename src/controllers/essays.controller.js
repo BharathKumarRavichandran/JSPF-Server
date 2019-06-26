@@ -183,7 +183,7 @@ exports.viewFinalEssays = async (req, res) => {
     try{
         const email = req.session.student.email;
         const student = await Student.findOne({email: email}).select('essays applicationNumber -_id').exec();
-        res.status(200).json({
+        return res.status(200).json({
             status_code: 200,
             message: {
                 applicationNumber: student.applicationNumber,
@@ -191,7 +191,7 @@ exports.viewFinalEssays = async (req, res) => {
             }
         });
     } catch(error){
-        res.status(400).json({
+        return res.status(400).json({
             status_code: 400,
             message: error.toString()
         });

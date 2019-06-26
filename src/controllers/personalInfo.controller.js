@@ -13,12 +13,12 @@ exports.updateInfo = async (req, res) => {
         const student = await Student.findOne({email: email}).exec();
         student.personalInfo.introduction = introduction;
         await student.save();
-        res.status(200).json({
+        return res.status(200).json({
             status_code: 200,
             message: `Successfully updated student's introduction`
         });
     } catch(error){
-        res.status(400).json({
+        return res.status(400).json({
             status_code: 400,
             message: error.toString()
         });
@@ -29,7 +29,7 @@ exports.getInfo = async (req, res) => {
     try{
         const email = req.session.student.email;
         const student = await Student.findOne({email: email}).select('personalInfo applicationNumber -_id').exec();
-        res.status(200).json({
+        return res.status(200).json({
             status_code: 200,
             message: {
                 applicationNumber: student.applicationNumber,
@@ -37,7 +37,7 @@ exports.getInfo = async (req, res) => {
             }
         });
     } catch(error){
-        res.status(400).json({
+        return res.status(400).json({
             status_code: 400,
             message: error.toString()
         });
