@@ -10,12 +10,14 @@ exports.checkStudentSession = (req, res, next) => {
         } 
         return res.status(400).json({
             status_code: 400,
-            message: 'Unauthorised access'
+            message: 'Unauthorised access',
+            data: {}
         });
     } catch(error) {
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -32,12 +34,14 @@ exports.checkAccountInactivation = async(req, res, next) => {
         }
         return res.status(400).json({
             status_code: 400,
-            message: 'Primary email is already verified.'
+            message: 'Primary email is already verified.',
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -51,12 +55,14 @@ exports.checkInstiVerificationAccess = async(req, res, next) => {
         }
         return res.status(400).json({
             status_code: 400,
-            message: 'Cant access the required resource.'
+            message: 'Cant access the required resource.',
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -70,12 +76,14 @@ exports.checkAccountActivation = async(req, res, next) => {
         }
         return res.status(400).json({
             status_code: 400,
-            message: 'Please complete institute email verification'
+            message: 'Please complete institute email verification',
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

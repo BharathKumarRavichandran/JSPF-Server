@@ -20,13 +20,15 @@ exports.sendSOPToMentors = async (req, res) => {
         
         return res.status(200).json({
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -43,13 +45,15 @@ exports.sendCommunityToMentors = async (req, res) => {
         
         return res.status(200).json({
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -66,13 +70,15 @@ exports.sendSocietyToMentors = async (req, res) => {
         
         return res.status(200).json({
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -100,13 +106,15 @@ exports.uploadFinalSOP = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -134,13 +142,15 @@ exports.uploadFinalCommunity = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -168,13 +178,15 @@ exports.uploadFinalSociety = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -185,7 +197,8 @@ exports.viewFinalEssays = async (req, res) => {
         const student = await Student.findOne({email: email}).select('essays applicationNumber -_id').exec();
         return res.status(200).json({
             status_code: 200,
-            message: {
+            message: 'Success',
+            data: {
                 applicationNumber: student.applicationNumber,
                 essays: student.essays
             }
@@ -193,7 +206,8 @@ exports.viewFinalEssays = async (req, res) => {
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

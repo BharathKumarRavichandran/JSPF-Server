@@ -18,13 +18,15 @@ exports.generatePdf = async(student,ejsPath,destinationFilePath) => {
         
         return {
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         }
 
     } catch (error) {
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }
@@ -50,12 +52,14 @@ exports.mergePdf = async (sourceFilesArray,destinationFilePath) => {
         let mergerResponse = await promisePdfMerger(sourceFilesArray,destinationFilePath)
         return {
             status_code: mergerResponse.status_code,
-            message: mergerResponse.message
+            message: mergerResponse.message,
+            data: {}
         }
     } catch (error) {
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }

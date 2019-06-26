@@ -20,12 +20,14 @@ exports.sendDocLink = async (req, res) => {
         await student.save();
         return res.status(200).json({
             status_code: 200,
-            message: `Successfully saved abstract's doc link`
+            message: `Successfully saved abstract's doc link`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -53,13 +55,15 @@ exports.uploadFinalAbstract = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -95,13 +99,15 @@ exports.uploadSupportingFiles = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -112,7 +118,8 @@ exports.viewAbstract = async (req, res) => {
         const student = await Student.findOne({email: email}).select('abstract applicationNumber -_id').exec();
         return res.status(200).json({
             status_code: 200,
-            message: {
+            message: 'Success',
+            data: {
                 applicationNumber: student.applicationNumber,
                 abstract: student.abstract
             }
@@ -120,7 +127,8 @@ exports.viewAbstract = async (req, res) => {
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

@@ -31,13 +31,15 @@ exports.uploadGradeSheetSem1 = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -65,13 +67,15 @@ exports.uploadInstiCertificate = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -99,13 +103,15 @@ exports.uploadNonInstiCertificate = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -133,13 +139,15 @@ exports.uploadGradeSheetMOOC = async (req, res) => {
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
-            message: uploadResponse.message
+            message: uploadResponse.message,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -150,7 +158,8 @@ exports.viewCertificates = async (req, res) => {
         const student = await Student.findOne({email: email}).select('certificates applicationNumber -_id').exec();
         return res.status(200).json({
             status_code: 200,
-            message: {
+            message: 'Success',
+            data: {
                 applicationNumber: student.applicationNumber,
                 certificates: student.certificates
             }
@@ -158,7 +167,8 @@ exports.viewCertificates = async (req, res) => {
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

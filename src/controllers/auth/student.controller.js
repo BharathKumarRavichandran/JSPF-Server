@@ -37,14 +37,16 @@ exports.sendVerificationCode = async (req, res) => {
         
         let newStudent = await student.save();
         
-        return res.json({
+        return res.status(200).json({
             status_code: 200,
-            message: `An email with verification code has been sent to your email: ${newStudent.email}`
+            message: `An email with verification code has been sent to your email: ${newStudent.email}`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -69,9 +71,10 @@ exports.reSendVerificationCode = async (req, res) => {
         
         let newStudent = await student.save();
         
-        return res.json({
+        return res.status(200).json({
             status_code: 200,
-            message: `An email with new verification code has been sent to your email: ${newStudent.email}`
+            message: `An email with new verification code has been sent to your email: ${newStudent.email}`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
@@ -99,12 +102,14 @@ exports.checkVerificationCode = async (req, res) => {
 
         return res.status(200).json({
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -137,14 +142,16 @@ exports.sendInstiVerificationCode = async (req, res) => {
 
         let newStudent = await student.save();
         
-        return res.json({
+        return res.status(200).json({
             status_code: 200,
-            message: `An email with verification code has been sent to your email: ${newStudent.instiEmail}`
+            message: `An email with verification code has been sent to your email: ${newStudent.instiEmail}`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -178,14 +185,16 @@ exports.reSendInstiVerificationCode = async (req, res) => {
 
         let newStudent = await student.save();
         
-        return res.json({
+        return res.status(200).json({
             status_code: 200,
-            message: `An email with new verification code has been sent to your email: ${newStudent.instiEmail}`
+            message: `An email with new verification code has been sent to your email: ${newStudent.instiEmail}`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -222,12 +231,14 @@ exports.verifyInstiEmail = async (req, res) => {
 
         return res.status(200).json({
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -251,14 +262,16 @@ exports.forgotPassword = async (req, res) => {
         
         await student.save();
         
-        return res.json({
+        return res.status(200).json({
             status_code: 200,
-            message: `An email with verification code has been sent to your email: ${student.email}`
+            message: `An email with verification code has been sent to your email: ${student.email}`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -290,14 +303,16 @@ exports.resetPassword = async (req, res) => {
         
         await student.save();
         
-        return res.json({
+        return res.status(200).json({
             status_code: 200,
-            message: `Password successfully reset.`
+            message: `Password successfully reset.`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -348,15 +363,17 @@ exports.registerStudent = async (req, res) => {
 
         let newStudent = await student.save();
         
-        return res.json({
+        return res.status(200).json({
             status_code: 200,
-            message: `User with email: ${newStudent.email} successfully registered.`
+            message: `User with email: ${newStudent.email} successfully registered.`,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -385,20 +402,23 @@ exports.loginStudent = async (req, res) => {
             }
             return res.status(200).json({
                 status_code: 200,
-                message: 'Successfully, logged in to your account.'
+                message: 'Successfully, logged in to your account.',
+                data: {}
             });
         }
         else{
             return res.status(400).json({
                 status_code: 400,
-                message: 'Username or Password is incorrect.'
+                message: 'Username or Password is incorrect.',
+                data: {}
             });
         }
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -408,12 +428,14 @@ exports.logoutStudent = async (req, res) => {
         let logout = req.session.destroy();
         return res.status(200).json({
             status_code: 200,
-            message: 'Successfully, logged out of your account.'
+            message: 'Successfully, logged out of your account.',
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

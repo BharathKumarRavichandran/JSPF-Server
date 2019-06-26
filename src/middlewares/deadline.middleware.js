@@ -13,13 +13,15 @@ exports.sendToMentorsDeadline = async (req, res, next) => {
 
         return res.status(400).json({
             status_code: 400,
-            message: `Sorry, can't send to mentors now.`
+            message: `Sorry, can't send to mentors now.`,
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -36,13 +38,15 @@ exports.finalProjectDeadline = async (req, res, next) => {
 
         return res.status(400).json({
             status_code: 400,
-            message: 'Sorry, project can be uploaded only 30 days before deadline.'
+            message: 'Sorry, project can be uploaded only 30 days before deadline.',
+            data: {}
         });
 
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

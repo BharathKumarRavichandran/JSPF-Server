@@ -19,7 +19,8 @@ class Uploader {
             onError : function(error, next) {
                 return {
                     status_code: 400,
-                    message: error.toString()
+                    message: error.toString(),
+                    data: {}
                 }
             }
         });
@@ -61,7 +62,8 @@ class Uploader {
         } catch (error) {
             return {
                 status_code: 400,
-                message: error.toString()
+                message: error.toString(),
+                data: {}
             }
         }
     }
@@ -80,7 +82,8 @@ class Uploader {
         } catch (error) {
             return {
                 status_code: 400,
-                message: error.toString()
+                message: error.toString(),
+                data: {}
             }
         }
     }

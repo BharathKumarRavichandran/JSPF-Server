@@ -32,12 +32,14 @@ exports.sendVerificationCode = async (recipientEmail,verificationCode) => {
         let mail = await sgMail.send(message);
         return {
             status_code: 200,
-            message: `Success`
+            message: `Success`,
+            data: {}
         }
     } catch(error){
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }
@@ -69,12 +71,14 @@ exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) =
         let mail = await sgMail.send(message);
         return {
             status_code: 200,
-            message: `Success`
+            message: `Success`,
+            data: {}
         }
     } catch(error){
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }
@@ -113,13 +117,15 @@ exports.sendApplicationSummary = async (recipientEmail,applicationSummaryPath) =
 
         return {
             status_code: 200,
-            message: `Success`
+            message: `Success`,
+            data: {}
         }
     } catch(error){
         console.log('mailerror',error);
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }

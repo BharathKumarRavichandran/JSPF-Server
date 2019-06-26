@@ -31,7 +31,8 @@ exports.viewApplication = async (req, res, next) => {
         if(genPdfResponse.status_code!=200){
             return res.status(genPdfResponse.status_code).json({
                 status_code: genPdfResponse.status_code,
-                message: genPdfResponse.message
+                message: genPdfResponse.message,
+                data: {}
             });
         }
 
@@ -51,7 +52,8 @@ exports.viewApplication = async (req, res, next) => {
         if(mergeResponse.status_code!=200){
             return res.status(mergeResponse.status_code).json({
                 status_code: mergeResponse.status_code,
-                message: mergeResponse.message
+                message: mergeResponse.message,
+                data: {}
             });
         }
         student.applicationFilePath = applicationRelativePath;
@@ -68,7 +70,8 @@ exports.viewApplication = async (req, res, next) => {
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -121,12 +124,14 @@ exports.submitForm = async (req, res, next) => {
 
         return res.status(200).json({
             status_code: 200,
-            message: `Successfully submitted form.`
+            message: `Successfully submitted form.`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

@@ -14,12 +14,14 @@ exports.updateSignature = async (req, res, next) => {
         await student.save();
         return res.status(200).json({
             status_code: 200,
-            message: `Successfully updated signature.`
+            message: `Successfully updated signature.`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -30,7 +32,8 @@ exports.getSignature = async (req, res, next) => {
         let student = await Student.findOne({email: email}).select('signature applicationNumber -_id').exec();
         return res.status(200).json({
             status_code: 200,
-            message: {
+            message: 'Success',
+            data: {
                 applicationNumber: student.applicationNumber,
                 signature: student.signature
             }
@@ -38,7 +41,8 @@ exports.getSignature = async (req, res, next) => {
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

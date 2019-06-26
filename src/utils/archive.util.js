@@ -66,13 +66,15 @@ exports.archiveSummary = async (student) => {
 
         return {
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         }
 
     } catch (error) {
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }
@@ -131,7 +133,8 @@ exports.archiveAllFinal = async (student) => {
             } catch (error) {
                 return {
                     status_code: 400,
-                    message: error.toString()
+                    message: error.toString(),
+                    data: {}
                 }
             }
         });
@@ -155,7 +158,8 @@ exports.archiveAllFinal = async (student) => {
             } catch (error) {
                 return {
                     status_code: 400,
-                    message: error.toString()
+                    message: error.toString(),
+                    data: {}
                 }
             }
         });
@@ -168,12 +172,14 @@ exports.archiveAllFinal = async (student) => {
 
         return {
             status_code: 200,
-            message: 'Success'
+            message: 'Success',
+            data: {}
         }
     } catch (error) {
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }

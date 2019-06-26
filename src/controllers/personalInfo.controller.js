@@ -15,12 +15,14 @@ exports.updateInfo = async (req, res) => {
         await student.save();
         return res.status(200).json({
             status_code: 200,
-            message: `Successfully updated student's introduction`
+            message: `Successfully updated student's introduction`,
+            data: {}
         });
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }
@@ -31,7 +33,8 @@ exports.getInfo = async (req, res) => {
         const student = await Student.findOne({email: email}).select('personalInfo applicationNumber -_id').exec();
         return res.status(200).json({
             status_code: 200,
-            message: {
+            message: 'Success',
+            data: {
                 applicationNumber: student.applicationNumber,
                 personalInfo: student.personalInfo
             }
@@ -39,7 +42,8 @@ exports.getInfo = async (req, res) => {
     } catch(error){
         return res.status(400).json({
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         });
     }
 }

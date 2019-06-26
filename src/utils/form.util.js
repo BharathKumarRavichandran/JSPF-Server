@@ -64,7 +64,8 @@ exports.returnFilesLocationAsArray = async (student) => {
     } catch (error) {
         return {
             status_code: 400,
-            message: error.toString()
+            message: error.toString(),
+            data: {}
         }
     }
 }
