@@ -1,0 +1,61 @@
+<html>
+<head>
+	<title>Jitheshraj Scholarship Application Personal Information</title>
+    <style>
+        .application-head {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2 class="application-head">Jitheshraj Scholarship Application</h2>
+    </div>
+    <div>
+        <div>
+            <span class="key">Application Number: </span>
+            <span class="value"><%= student.applicationNumber %></span>
+        </div>
+        <div>
+            <span class="key">Name: </span>
+            <span class="value"><%= student.personalInfo.name %></span>
+        </div>
+        <div>
+            <span class="key">Roll Number: </span>
+            <span class="value"><%= student.personalInfo.rollNumber %></span>
+        </div>
+        <div>
+            <span class="key">Department: </span>
+            <span class="value"><%= student.personalInfo.department %></span>
+        </div>
+        <div>
+            <span class="key">E-Mail Address(Primary): </span>
+            <span class="value"><%= student.email %></span>
+        </div>
+        <div>
+            <span class="key">Institude E-Mail Address(Other): </span>
+            <span class="value"><%= student.instiEmail %></span>
+        </div>
+        <div>
+            <span class="key">Contact Number (Call): </span>
+            <span class="value"><%= student.personalInfo.name %></span>
+        </div>
+        <div>
+            <span class="key">Contact Number (Whatsapp): </span>
+            <span class="value"><%= student.personalInfo.name %></span>
+        </div>
+        <div>
+            <span class="key">T-Shirt Size: </span>
+            <span class="value"><%= student.personalInfo.tshirtSize %></span>
+        </div>
+        <div>
+            <span class="key">Signature (Full Name): </span>
+            <span class="value"><%= student.signature %></span>
+        </div>
+        <div>
+            <span class="key">Introduction: </span>
+            <span class="value"><%= student.personalInfo.introduction %></span>
+        </div>
+    </div>
+</body>
+</html>
