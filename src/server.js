@@ -17,7 +17,7 @@ const routes = require('./routes/index.router');
 const config = require('./config/config');
 
 // env/config variables
-const PORT = config.PORT || 8000;
+const APP_PORT = config.ports.APP_PORT || 8000;
 const MONGODB_URI = config.mongodb.DB_URI;
 const SESSION_SECRET = config.session.secretString;
 
@@ -78,13 +78,10 @@ app.use(session({
 	saveUninitialized: false
 }));
 
-// Setting API key
-sgMail.setApiKey(config.key.SENDGRID_API_KEY);
-
 app.use(routes);
 
 app.get('/',(req,res) => {
-	res.send('What are you doing here? :p');
+	return res.send('What are you doing here? :p');
 });
 
 app.all('*', (req, res) => {
@@ -93,13 +90,13 @@ app.all('*', (req, res) => {
 });
 
 exports.start = () => {
-	app.listen(PORT, () => {
-		signale.success(`Listening on port: ${PORT}`)
-	})
+	app.listen(APP_PORT, () => {
+		signale.success(`App server listening on port: ${APP_PORT}`);
+	});
 }
 
 exports.stop = () => {
-	app.close(PORT, () => {
-		signale.success(`Shut down on port: ${PORT}`)
-	})
+	app.close(APP_PORT, () => {
+		signale.success(`App server shut down on port: ${APP_PORT}`);
+	});
 }
