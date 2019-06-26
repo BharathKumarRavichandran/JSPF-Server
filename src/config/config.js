@@ -3,13 +3,13 @@ const path = require('path');
 
 
 // Declaring globals
-const BASE_DIR = __dirname+'/./../../';
+const BASE_DIR = __dirname + '/./../../';
 
 dotenv.config(
-    {
+	{
 		debug: process.env.DEBUG,
-        path: __dirname+'/./../../.env' 
-    }
+		path: __dirname + '/./../../.env'
+	}
 );
 
 module.exports = {
@@ -25,22 +25,39 @@ module.exports = {
 		END_YEAR: process.env.END_YEAR
 	},
 	directory: {
-		BASE_DIR:  BASE_DIR,
+		BASE_DIR: BASE_DIR,
 		CLIENT_BASE_DIR: process.env.CLIENT_BASE_DIR,
-		LOGS_DIR: path.join(BASE_DIR,'storage','logs'),
-		UPLOADS_DIR: process.env.DEBUG ? path.join(BASE_DIR,'public','uploads') : path.join(process.env.CLIENT_BASE_DIR,'public','uploads')
+		CONFIG_DIR: path.join(BASE_DIR, 'src', 'config'),
+		LOGS_DIR: path.join(BASE_DIR, 'storage', 'logs'),
+		PUBLIC_DIR: process.env.DEBUG ? path.join(BASE_DIR, 'public') : path.join(process.env.CLIENT_BASE_DIR, 'public'),
+		SRC_DIR: path.join(BASE_DIR, 'src'),
+		UPLOADS_DIR: process.env.DEBUG ? path.join(BASE_DIR, 'public', 'uploads') : path.join(process.env.CLIENT_BASE_DIR, 'public', 'uploads')
+	},
+	files: {
+		archive: {
+			format: 'zip',
+			mimeType: 'application/zip'
+		}
 	},
 	key: {
-		SENDGRID_API_KEY: process.env.SENDGRID_API_KEY
+		SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+		google_auth: {
+			credentials: path.join(__dirname, 'google_auth_credentials.json'),
+			service_jwt: path.join(__dirname, 'google_auth_service_jwt.json'),
+			TOKEN_PATH: path.join(__dirname, 'google_auth_token.json')
+		},
 	},
-    mongodb: {
+	mongodb: {
 		DB_USERNAME: process.env.DB_USERNAME,
 		DB_PASSWORD: process.env.DB_PASSWORD,
-    	DB_URI: process.env.DB_URI
-    },
-    PORT: process.env.PORT,
-    session: {
-      secretString: process.env.SESSION_SECRET
+		DB_URI: process.env.DB_URI
+	},
+	ports: {
+		APP_PORT: process.env.APP_PORT,
+		KUE_PORT: process.env.KUE_PORT
+	},
+	session: {
+		secretString: process.env.SESSION_SECRET
 	},
 	url: {
 		API_BASE_URL: process.env.API_BASE_URL,
