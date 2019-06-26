@@ -4,7 +4,7 @@ const router = require('express').Router();
 const formController = require('../controllers/form.controller');
 
 // Final form submission routes
-router.post('/preview', formController.previewForm);
+router.post('/view', formController.viewApplication);
 router.post('/submit', formController.submitForm);
 
 module.exports = router;

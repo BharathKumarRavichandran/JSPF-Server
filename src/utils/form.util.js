@@ -1,3 +1,9 @@
+const path = require('path');
+
+// Importing config/env variables
+const config = require('../config/config');
+
+
 exports.checkFormSubmission = (student) => {
     let bool = (
         student.email &&
@@ -8,6 +14,7 @@ exports.checkFormSubmission = (student) => {
         student.applicationNumber &&
         student.personalInfo &&
         student.personalInfo.name &&
+        student.personalInfo.rollNumber &&
         student.personalInfo.department &&
         student.personalInfo.contactNumberCall &&
         student.personalInfo.contactNumberWhatsapp &&
@@ -29,4 +36,35 @@ exports.checkFormSubmission = (student) => {
         student.signature
     );
     return bool;
+}
+
+exports.returnFilesLocationAsArray = async (student) => {
+    try {
+        let filesPathArray = new Array();
+
+        // Add personalInfo pdf
+        filesPathArray.push(path.join(config.directory.PUBLIC_DIR,student.personalInfo.filePath));
+
+        // Add project abstract
+        filesPathArray.push(path.join(config.directory.PUBLIC_DIR,student.abstract.projectAbstract));
+
+        // Add final version of essays (SOP, Community, Society)
+        let finalEssays = student.essays.final.toJSON();
+        Object.values(finalEssays).forEach( (relativePath) => {
+            filesPathArray.push(path.join(config.directory.PUBLIC_DIR,relativePath));
+        });
+
+        return {
+            status_code: 200,
+            message: 'Success',
+            data: {
+                filesPathArray: filesPathArray
+            }
+        }
+    } catch (error) {
+        return {
+            status_code: 400,
+            message: error.toString()
+        }
+    }
 }
