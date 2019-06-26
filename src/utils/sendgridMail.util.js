@@ -5,6 +5,9 @@ const sgMail = require('@sendgrid/mail');
 // Importing configuration/env variables
 const config = require('../config/config');
 
+// Setting Sendgrid API key
+sgMail.setApiKey(config.key.SENDGRID_API_KEY);
+
 exports.sendVerificationCode = async (recipientEmail,verificationCode) => {
     try {
         const message = {
@@ -13,7 +16,7 @@ exports.sendVerificationCode = async (recipientEmail,verificationCode) => {
             subject: 'Jitheshraj Scholarship Email Verification Code',
             html: `
                 <div>
-                    <div>Hi !</div>
+                    <div>Hi,</div>
                     <br/>
                     <div>Welcome to Jitheshraj Scholarship - ​An initiative of the academy for holistic education, awareness and development(AHEAD) Trust. In order to apply on the portal we require you to verify your account so enter the code given below into the verification box on the website.</div>
                     <br/>
@@ -47,7 +50,7 @@ exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) =
             subject: 'Jitheshraj Scholarship Password Reset Verification Code',
             html: `
                 <div>
-                    <div>Hi !</div>
+                    <div>Hi,</div>
                     <br/>
                     <div>You have requested for a password reset.</div>
                     <br/>
@@ -76,16 +79,15 @@ exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) =
     }
 }
 
-exports.sendApplicationSummary = async (recipientEmail,zipFilePath) => {
+exports.sendApplicationSummary = async (recipientEmail,applicationSummaryPath) => {
     try {
-        let applicationSummaryPath = path.join(config.directory.PUBLIC_DIR,zipFilePath);
-        const message = {
+        let message = {
             from: config.email.SITE_NOREPLY_EMAIL,
             to: recipientEmail,
             subject: 'Jitheshraj Scholarship Application Summary',
             html: `
                 <div>
-                    <div>Hi !</div>
+                    <div>Hi,</div>
                     <br/>
                     <div>Successfully received your application form for Jitheshraj Scholarship ${config.date.START_YEAR}-${config.date.END_YEAR}.</div>
                     <br/>
@@ -100,8 +102,8 @@ exports.sendApplicationSummary = async (recipientEmail,zipFilePath) => {
             attachments: [
                 {
                     content: fs.readFileSync(applicationSummaryPath,{ encoding: "base64" }),
-                    filename: 'JSPF-Application.zip',
-                    type: 'application/zip',
+                    filename: 'JSPF-Application'+path.extname(applicationSummaryPath),
+                    type: `${config.files.archive.mimeType}`,
                     disposition: 'attachment',
                     contentId: 'JSPF-Application'
                 },
@@ -114,6 +116,7 @@ exports.sendApplicationSummary = async (recipientEmail,zipFilePath) => {
             message: `Success`
         }
     } catch(error){
+        console.log('mailerror',error);
         return {
             status_code: 400,
             message: error.toString()
