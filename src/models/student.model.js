@@ -56,6 +56,10 @@ const studentSchema = new mongoose.Schema({
 		introduction: {
 			type: String,
 			default: null
+		},
+		filePath: {
+			type: String,
+			default: null
 		}
 	},
 	certificates: {
@@ -122,6 +126,20 @@ const studentSchema = new mongoose.Schema({
 	signature: {
 		type: String,
 		default: null
+	},
+	applicationFilePath: {
+		type: String,
+		default: null
+	},
+	archive: {
+		summary: {
+			type: String,
+			default: null
+		},
+		final: {
+			type: String,
+			default: null
+		}
 	},
 	isSubmitted: {
 		type: Boolean,
