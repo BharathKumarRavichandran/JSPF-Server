@@ -24,15 +24,17 @@ module.exports = {
 		START_YEAR: process.env.START_YEAR,
 		END_YEAR: process.env.END_YEAR
 	},
+	debug: process.env.debug,
 	directory: {
 		BASE_DIR: BASE_DIR,
 		CLIENT_BASE_DIR: process.env.CLIENT_BASE_DIR,
 		CONFIG_DIR: path.join(BASE_DIR, 'src', 'config'),
 		LOGS_DIR: path.join(BASE_DIR, 'storage', 'logs'),
-		PUBLIC_DIR: process.env.DEBUG ? path.join(BASE_DIR, 'public') : path.join(process.env.CLIENT_BASE_DIR, 'public'),
+		PUBLIC_DIR: process.env.environment=='production' ? path.join(process.env.CLIENT_BASE_DIR, 'public') : path.join(BASE_DIR, 'public'),
 		SRC_DIR: path.join(BASE_DIR, 'src'),
-		UPLOADS_DIR: process.env.DEBUG ? path.join(BASE_DIR, 'public', 'uploads') : path.join(process.env.CLIENT_BASE_DIR, 'public', 'uploads')
+		UPLOADS_DIR: process.env.environment=='production' ? path.join(process.env.CLIENT_BASE_DIR, 'public', 'uploads') : path.join(BASE_DIR, 'public', 'uploads')
 	},
+	environment: process.env.environment,
 	files: {
 		archive: {
 			format: 'zip',
