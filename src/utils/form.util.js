@@ -2,7 +2,7 @@ const path = require('path');
 
 // Importing config/env variables
 const config = require('../config/config');
-
+const logger = require('../config/winston');
 
 exports.checkFormSubmission = (student) => {
     let bool = (
@@ -62,6 +62,7 @@ exports.returnFilesLocationAsArray = async (student) => {
             }
         }
     } catch (error) {
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),

@@ -1,6 +1,9 @@
 const path = require('path');
 const randomstring = require('randomstring');
 
+// Importing config/env variables
+const logger = require('../config/winston');
+
 // Importing models
 const Student = require('../models/student.model');
 
@@ -27,6 +30,10 @@ exports.uploadGradeSheetSem1 = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.gradeSheetSem1 = location;
             await student.save();
+            logger.info(`Successfully uploaded GradeSheetSem1 for email: ${student.email}`);
+        }
+        else{
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -36,6 +43,7 @@ exports.uploadGradeSheetSem1 = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -63,6 +71,10 @@ exports.uploadInstiCertificate = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.instiCertificate = location;
             await student.save();
+            logger.info(`Successfully uploaded institute certificate for email: ${student.email}`);
+        }
+        else{
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -72,6 +84,7 @@ exports.uploadInstiCertificate = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -99,6 +112,10 @@ exports.uploadNonInstiCertificate = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.nonInstiCertificate = location;
             await student.save();
+            logger.info(`Successfully uploaded non-institute certificate for email: ${student.email}`);
+        }
+        else{
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -108,6 +125,7 @@ exports.uploadNonInstiCertificate = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -135,6 +153,10 @@ exports.uploadGradeSheetMOOC = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.certificates.gradeSheetMOOC = location;
             await student.save();
+            logger.info(`Successfully uploaded GradeSheetMOOC for email: ${student.email}`);
+        }
+        else{
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -144,6 +166,7 @@ exports.uploadGradeSheetMOOC = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -156,6 +179,8 @@ exports.viewCertificates = async (req, res) => {
     try{
         const email = req.session.student.email;
         const student = await Student.findOne({email: email}).select('certificates applicationNumber -_id').exec();
+        
+        logger.info(`Successfully retrieved certificate details for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -165,6 +190,7 @@ exports.viewCertificates = async (req, res) => {
             }
         });
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),

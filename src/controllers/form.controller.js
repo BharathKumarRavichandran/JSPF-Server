@@ -5,6 +5,7 @@ const randomstring = require('randomstring');
 
 // Importing config/env variables
 const config = require('../config/config');
+const logger = require('../config/winston');
 
 // Importing models
 const Student = require('../models/student.model');
@@ -18,8 +19,15 @@ exports.viewApplication = async (req, res, next) => {
     try{
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
-        if(!formUtil.checkFormSubmission(student))
-            throw('Please fill all required fields to view application form.');
+        
+        if(!formUtil.checkFormSubmission(student)){
+            logger.warn('Please fill all required fields to submit form.');
+            return res.status(400).json({
+                status_code: 400,
+                message: `Please fill all required fields to submit form.`,
+                data: {}
+            });
+        }
 
         // Add file paths to generate personal information pdf
         const ejsPath = path.join(config.directory.SRC_DIR,'templates','pdfs','personalInfo.ejs');
@@ -29,12 +37,14 @@ exports.viewApplication = async (req, res, next) => {
         // Generate pdf with personal information, certificates and grade sheets
         let genPdfResponse = await pdfUtil.generatePdf(student,ejsPath,destinationFilePath);
         if(genPdfResponse.status_code!=200){
+            logger.error(error.toString());
             return res.status(genPdfResponse.status_code).json({
                 status_code: genPdfResponse.status_code,
                 message: genPdfResponse.message,
                 data: {}
             });
         }
+        logger.info(`Generated personal info pdf for email: ${student.email}.`);
 
         const personalInfoFilePath = path.join('uploads',student.applicationNumber,personalInfoFileName);
         student.personalInfo.filePath = personalInfoFilePath;
@@ -59,6 +69,7 @@ exports.viewApplication = async (req, res, next) => {
         student.applicationFilePath = applicationRelativePath;
         let newStudent = await student.save();
 
+        logger.info(`Generated merged pdf containing all submitted files for email: ${student.email}.`);
         return res.status(200).json({
             status_code: 200,
             message: `Success`,
@@ -68,6 +79,7 @@ exports.viewApplication = async (req, res, next) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -81,11 +93,23 @@ exports.submitForm = async (req, res, next) => {
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
         
-        if(!formUtil.checkFormSubmission(student))
-            throw('Please fill all required fields to submit form.');
+        if(!formUtil.checkFormSubmission(student)){
+            logger.warn('Please fill all required fields to submit form.');
+            return res.status(400).json({
+                status_code: 400,
+                message: `Please fill all required fields to submit form.`,
+                data: {}
+            });
+        }
         
-        if(student.isSubmitted)
-            throw('Already submitted form.');
+        if(student.isSubmitted){
+            logger.warn('Already submitted form.');
+            return res.status(400).json({
+                status_code: 400,
+                message: `Already submitted form.`,
+                data: {}
+            });
+        }
         
         let summaryArchiveFileName = student.applicationNumber + '_summary_' + Date.now() + '.' + config.files.archive.format;
         let summaryArchiveFilePath = path.join('uploads',student.applicationNumber,summaryArchiveFileName);
@@ -108,6 +132,7 @@ exports.submitForm = async (req, res, next) => {
         .backoff({type: 'exponential'})
         .save();
         summaryArchiveJob.log(`${student.email}: Archive summary application job added to job queue.`);
+        logger.info(`${student.email}: Archive summary application job added to job queue.`);
 
         // Archive final application and upload to google drive
         let finalArchiveJob = await queue.create('archiveFinal', {
@@ -118,16 +143,19 @@ exports.submitForm = async (req, res, next) => {
         .backoff({type: 'exponential'})
         .save();
         finalArchiveJob.log(`${student.email}: Archive final files job added to queue.`);
+        logger.info(`${student.email}: Archive final files job added to queue.`);
         
         student.isSubmitted = true;
         await student.save();
 
+        logger.info(`Successfully submitted form for email: ${student.email}.`);
         return res.status(200).json({
             status_code: 200,
             message: `Successfully submitted form.`,
             data: {}
         });
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),

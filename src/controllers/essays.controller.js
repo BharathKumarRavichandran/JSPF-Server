@@ -1,6 +1,9 @@
 const path = require('path');
 const randomstring = require('randomstring');
 
+// Importing config/env variables
+const logger = require('../config/winston');
+
 // Importing models
 const Student = require('../models/student.model');
 
@@ -10,14 +13,21 @@ const Uploader = require('../utils/upload.util');
 
 exports.sendSOPToMentors = async (req, res) => {
     try{
-        if(!req.body.sopLink)
-            throw('Invalid parameters');
+        if(!req.body.sopLink){
+            logger.warn('Invalid parameters');
+            return res.status(400).json({
+                status_code: 400,
+                message: 'Invalid parameters',
+                data: {}
+            });
+        }
         const email = req.session.student.email;
         const sopLink = sanitize(req.body.sopLink);
         let student = await Student.findOne({email: email}).exec();
         student.essays.mentors.sop = sopLink;
         await student.save();
         
+        logger.info(`Successfully saved SOP link for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -25,6 +35,7 @@ exports.sendSOPToMentors = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -35,14 +46,22 @@ exports.sendSOPToMentors = async (req, res) => {
 
 exports.sendCommunityToMentors = async (req, res) => {
     try{
-        if(!req.body.communityLink)
-            throw('Invalid parameters');
+        if(!req.body.communityLink){
+            logger.warn('Invalid parameters');
+            return res.status(400).json({
+                status_code: 400,
+                message: 'Invalid parameters',
+                data: {}
+            });
+        }
+
         const email = req.session.student.email;
         const communityLink = sanitize(req.body.communityLink);
         let student = await Student.findOne({email: email}).exec();
         student.essays.mentors.community = communityLink;
         await student.save();
         
+        logger.info(`Successfully saved community essay link for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -50,6 +69,7 @@ exports.sendCommunityToMentors = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -60,14 +80,22 @@ exports.sendCommunityToMentors = async (req, res) => {
 
 exports.sendSocietyToMentors = async (req, res) => {
     try{
-        if(!req.body.societyLink)
-            throw('Invalid parameters');
+        if(!req.body.societyLink){
+            logger.warn('Invalid parameters');
+            return res.status(400).json({
+                status_code: 400,
+                message: 'Invalid parameters',
+                data: {}
+            });
+        }
+
         const email = req.session.student.email;
         const societyLink = sanitize(req.body.societyLink);
         let student = await Student.findOne({email: email}).exec();
         student.essays.mentors.society = societyLink;
         await student.save();
         
+        logger.info(`Successfully saved society essay link for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -75,6 +103,7 @@ exports.sendSocietyToMentors = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -102,6 +131,10 @@ exports.uploadFinalSOP = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.final.sop = location;
             await student.save();
+            logger.info(`Successfully uploaded final SOP for email: ${student.email}`);
+        }
+        else{
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -111,6 +144,7 @@ exports.uploadFinalSOP = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -138,6 +172,10 @@ exports.uploadFinalCommunity = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.final.community = location;
             await student.save();
+            logger.info(`Successfully uploaded final community essay for email: ${student.email}`);
+        }
+        else{
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -147,6 +185,7 @@ exports.uploadFinalCommunity = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -174,6 +213,10 @@ exports.uploadFinalSociety = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.essays.final.society = location;
             await student.save();
+            logger.info(`Successfully uploaded final society essay for email: ${student.email}`);
+        }
+        else{
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -183,6 +226,7 @@ exports.uploadFinalSociety = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -195,6 +239,8 @@ exports.viewFinalEssays = async (req, res) => {
     try{
         const email = req.session.student.email;
         const student = await Student.findOne({email: email}).select('essays applicationNumber -_id').exec();
+        
+        logger.info(`Successfully retrieved final essay links/details for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -204,6 +250,7 @@ exports.viewFinalEssays = async (req, res) => {
             }
         });
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),

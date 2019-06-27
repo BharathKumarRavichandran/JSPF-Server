@@ -4,6 +4,7 @@ const util = require('util');
 
 // Importing config/env variables
 const config = require('../config/config');
+const logger = require('../config/winston');
 
 
 class Uploader {
@@ -13,10 +14,11 @@ class Uploader {
         // Set The Storage Engine
         const storageOptions = multer.diskStorage({
             destination: path.join(config.directory.UPLOADS_DIR,applicationNumber),
-            filename: function (req, file, cb) {
+            filename: (req, file, cb) => {
                 cb(null, fileOptions.fileName + '_' + Date.now() + path.extname(file.originalname));
             },
-            onError : function(error, next) {
+            onError : (error, next) => {
+                logger.error(error.toString());
                 return {
                     status_code: 400,
                     message: error.toString(),
@@ -34,6 +36,7 @@ class Uploader {
             if (mimetype && extname) {
                 return cb(null, true);
             } else {
+                logger.warn('Error: Upload only allowed file types');
                 cb('Error: Upload only allowed file types');
             }
         }
@@ -52,6 +55,8 @@ class Uploader {
         try {
             const upload = util.promisify(this.upload.single(fieldName));
             let response = await upload(req, res);
+
+            logger.info('File has been successfully uploaded.');
             return {
                 status_code: 200,
                 message: 'File has been successfully uploaded.',
@@ -60,6 +65,7 @@ class Uploader {
                 }
             }
         } catch (error) {
+            logger.error(error.toString());
             return {
                 status_code: 400,
                 message: error.toString(),
@@ -72,6 +78,8 @@ class Uploader {
         try {
             const upload = util.promisify(this.upload.array(fieldDetails.fieldName,fieldDetails.maxCount));
             let response = await upload(req, res);
+            
+            logger.info('Files have been successfully uploaded.');
             return {
                 status_code: 200,
                 message: 'Files have been successfully uploaded.',
@@ -80,6 +88,7 @@ class Uploader {
                 }
             }
         } catch (error) {
+            logger.error(error.toString());
             return {
                 status_code: 400,
                 message: error.toString(),

@@ -4,6 +4,7 @@ const path = require('path');
 
 // Importing config/env variables
 const config = require('../config/config');
+const logger = require('../config/winston');
 
 
 exports.archiveSummary = async (student) => {
@@ -18,28 +19,30 @@ exports.archiveSummary = async (student) => {
         let output = fs.createWriteStream(archiveFilePath);
 
         output.on('close', () => {
-            console.log(archive.pointer() + ' total bytes');
-            console.log('Archiver has been finalized and the output file descriptor has closed.');
+            logger.info(archive.pointer() + ' total bytes');
+            logger.info('Archiver has been finalized and the output file descriptor has closed.');
         });
 
         output.on('end', () => {
-            console.log('Data has been drained');
+            logger.info('Data has been drained');
         });
 
         archive.on('warning', (error) => {
             if (error.code === 'ENOENT') { // stat failures
+                logger.error('ENOENT: File not found');
                 throw('File not found');
-                // log error
             } else {
+                logger.error(error.toString());
                 throw error;
             }
         });
 
         archive.on('error', (error) => {
             if (error.code === 'ENOENT') { // stat failures
+                logger.error('ENOENT: File not found');
                 throw('File not found');
-                // log error
             } else {
+                logger.error(error.toString());
                 throw error;
             }
         });
@@ -58,8 +61,10 @@ exports.archiveSummary = async (student) => {
             archive.file(location,{name: path.basename(location)});
         }
 
-        if(!bool)
-            throw(new Error('File(s) not found.'));
+        if(!bool){
+            logger.error('File(s) not found');
+            throw new Error('File(s) not found.');
+        }
 
         // Write everything to disk
         await archive.finalize();
@@ -71,6 +76,7 @@ exports.archiveSummary = async (student) => {
         }
 
     } catch (error) {
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),
@@ -91,28 +97,30 @@ exports.archiveAllFinal = async (student) => {
         let output = fs.createWriteStream(archiveFilePath);
 
         output.on('close', () => {
-            console.log(archive.pointer() + ' total bytes');
-            console.log('Archiver has been finalized and the output file descriptor has closed.');
+            logger.info(archive.pointer() + ' total bytes');
+            logger.info('Archiver has been finalized and the output file descriptor has closed.');
         });
 
         output.on('end', function() {
-            console.log('Data has been drained');
+            logger.info('Data has been drained');
         });
 
-        archive.on('warning', function(error) {
+        archive.on('warning', (error) => {
             if (error.code === 'ENOENT') { // stat failures
+                logger.error('ENOENT: File not found');
                 throw('File not found');
-                // log error
             } else {
+                logger.error(error.toString());
                 throw error;
             }
         });
 
         archive.on('error', (error) => {
             if (error.code === 'ENOENT') { // stat failures
+                logger.error('ENOENT: File not found');
                 throw('File not found');
-                // log error
             } else {
+                logger.error(error.toString());
                 throw error;
             }
         });
@@ -164,8 +172,10 @@ exports.archiveAllFinal = async (student) => {
             }
         });
 
-        if(!bool)
-            throw(new Error('File(s) not found.'));
+        if(!bool){
+            logger.error('File(s) not found.');
+            throw new Error('File(s) not found.');
+        }
 
         // Write everything to disk
         await archive.finalize();
@@ -176,6 +186,7 @@ exports.archiveAllFinal = async (student) => {
             data: {}
         }
     } catch (error) {
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),

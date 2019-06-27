@@ -2,6 +2,9 @@ const path = require('path');
 const randomstring = require('randomstring');
 const sanitize = require('mongo-sanitize');
 
+// Importing config/env variables
+const logger = require('../config/winston');
+
 // Importing models
 const Student = require('../models/student.model');
 
@@ -11,19 +14,29 @@ const Uploader = require('../utils/upload.util');
 
 exports.sendDocLink = async (req, res) => {
     try{
-        if(!req.body.docLink)
-            throw('Invalid parameters');
+        if(!req.body.docLink){
+            logger.warn('Invalid parameters');
+            return res.status(400).json({
+                status_code: 400,
+                message: 'Invalid parameters',
+                data: {}
+            });
+        }
+
         const email = req.session.student.email;
         let docLink = sanitize(req.body.docLink);
         const student = await Student.findOne({email: email}).exec();
         student.abstract.docLink = docLink;
         await student.save();
+        
+        logger.info(`Successfully saved abstract's doc link for email: ${student.email}.`);
         return res.status(200).json({
             status_code: 200,
             message: `Successfully saved abstract's doc link`,
             data: {}
         });
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -51,8 +64,12 @@ exports.uploadFinalAbstract = async (req, res) => {
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
             student.abstract.projectAbstract = location;
             await student.save();
+            logger.info(`Successfully uploaded project abstract for email: ${student.email}`);
         }
-        
+        else{
+            logger.warn(uploadResponse.message);
+        }
+                
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
             message: uploadResponse.message,
@@ -60,6 +77,7 @@ exports.uploadFinalAbstract = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -95,6 +113,10 @@ exports.uploadSupportingFiles = async (req, res) => {
             }
             student.abstract.supportingFiles = locationArray;
             await student.save();
+            logger.info(`Successfully uploaded project supporting files for email: ${student.email}`);
+        }
+        else {
+            logger.warn(uploadResponse.message);
         }
         
         return res.status(uploadResponse.status_code).json({
@@ -104,6 +126,7 @@ exports.uploadSupportingFiles = async (req, res) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -116,6 +139,8 @@ exports.viewAbstract = async (req, res) => {
     try{
         const email = req.session.student.email;
         const student = await Student.findOne({email: email}).select('abstract applicationNumber -_id').exec();
+        
+        logger.info(`Successfully retrieved abstract details for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -125,6 +150,7 @@ exports.viewAbstract = async (req, res) => {
             }
         });
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),

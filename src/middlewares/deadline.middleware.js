@@ -1,5 +1,6 @@
 // Importing config/env variables
 const config = require('../config/config');
+const logger = require('../config/winston');
 
 exports.sendToMentorsDeadline = async (req, res, next) => {
     try {
@@ -11,6 +12,7 @@ exports.sendToMentorsDeadline = async (req, res, next) => {
             return next();
         }
 
+        logger.info(`Action(send to mentors) is not allowed`);
         return res.status(400).json({
             status_code: 400,
             message: `Sorry, can't send to mentors now.`,
@@ -18,6 +20,7 @@ exports.sendToMentorsDeadline = async (req, res, next) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),
@@ -36,6 +39,7 @@ exports.finalProjectDeadline = async (req, res, next) => {
             return next();
         }
 
+        logger.info(`Action(project abstract upload) is not allowed`);
         return res.status(400).json({
             status_code: 400,
             message: 'Sorry, project can be uploaded only 30 days before deadline.',
@@ -43,6 +47,7 @@ exports.finalProjectDeadline = async (req, res, next) => {
         });
 
     } catch(error){
+        logger.error(error.toString());
         return res.status(400).json({
             status_code: 400,
             message: error.toString(),

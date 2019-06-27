@@ -3,6 +3,9 @@ const fs = require('fs');
 const pdfMerge = require('easy-pdf-merge');
 const wkhtmltopdf = require('wkhtmltopdf');
 
+// Importing config/env variables
+const logger = require('../config/winston');
+
 
 exports.generatePdf = async(student,ejsPath,destinationFilePath) => {
     try {
@@ -23,6 +26,7 @@ exports.generatePdf = async(student,ejsPath,destinationFilePath) => {
         }
 
     } catch (error) {
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),
@@ -35,6 +39,7 @@ const promisePdfMerger = (sourceFilesArray,destinationFilePath) => {
     return new Promise((resolve,reject) =>{
         pdfMerge(sourceFilesArray,destinationFilePath, (error) => {
             if(error){
+                logger.error(error.toString());
                 reject(error);
             }
     
@@ -56,6 +61,7 @@ exports.mergePdf = async (sourceFilesArray,destinationFilePath) => {
             data: {}
         }
     } catch (error) {
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),

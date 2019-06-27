@@ -1,4 +1,5 @@
 const fs = require('fs');
+const logger = require('../config/winston');
 const path = require('path');
 const sgMail = require('@sendgrid/mail');
 
@@ -36,6 +37,7 @@ exports.sendVerificationCode = async (recipientEmail,verificationCode) => {
             data: {}
         }
     } catch(error){
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),
@@ -75,6 +77,7 @@ exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) =
             data: {}
         }
     } catch(error){
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),
@@ -121,7 +124,7 @@ exports.sendApplicationSummary = async (recipientEmail,applicationSummaryPath) =
             data: {}
         }
     } catch(error){
-        console.log('mailerror',error);
+        logger.error(error.toString());
         return {
             status_code: 400,
             message: error.toString(),
