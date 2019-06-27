@@ -25,6 +25,12 @@ app.use('/api', kue.app);
 // Mount UI
 app.use('/kue', ui.app);
 
+// Route error handler
+app.use( (err, req, res, next) => {
+	// Log errors
+	logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
+});
+
 app.all('*', (req, res) => {
 	signale.error('Returning a 404 from the kue server catch-all route');
 	return res.sendStatus(404);

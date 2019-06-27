@@ -4,9 +4,10 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const express = require('express');
 const expressValidator = require('express-validator');
+const logger = require('./config/winston');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 const signale = require('signale');
-const sgMail = require('@sendgrid/mail');
 const session = require('express-session');
 
 
@@ -32,13 +33,17 @@ const corsOptions = {
 const app = express();
 const router = express.Router();
 
+// Configure loggers
+app.use(morgan('combined', { stream: logger.stream }));
+
 // Database connection
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true })
 	.then(() => {
 		signale.success('*****Database Connection Successfull******');
-	}).catch(err => {
-		signale.fatal(new Error(err));
+	}).catch(error => {
+		logger.error(error.toString());
+		signale.fatal(new Error(error));
 		signale.warn('Could not connect to Database. Exiting now...');
 		process.exit();
 	});
@@ -80,8 +85,14 @@ app.use(session({
 
 app.use(routes);
 
-app.get('/',(req,res) => {
+app.get('/', (req, res) => {
 	return res.send('What are you doing here? :p');
+});
+
+// Route error handler
+app.use( (err, req, res, next) => {
+	// Log errors
+	logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
 });
 
 app.all('*', (req, res) => {
