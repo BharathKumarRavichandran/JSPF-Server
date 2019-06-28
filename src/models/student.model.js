@@ -57,6 +57,40 @@ const studentSchema = new mongoose.Schema({
 			type: String,
 			default: null
 		},
+		gender: {
+			type: String,
+			default: null
+		},
+		disability: {
+			status: {
+				type: String,
+				enum: ['','Yes','No'],
+				default: null
+			},
+			description: {
+				type: String,
+				default: null
+			}
+		},
+		nationality: {
+			type: String,
+			default: null
+		},
+		firstGenStudent: {
+			type: String,
+			enum: ['','Yes','No'],
+			default: null
+		},
+		refugee: {
+			type: String,
+			enum: ['','Yes','Not applicable'],
+			default: null
+		},
+		pronoun: {
+			type: String,
+			enum: ['',`He/him/his`,`She/her/hers`,`They/them/their/theirs`],
+			default: null
+		},
 		filePath: {
 			type: String,
 			default: null

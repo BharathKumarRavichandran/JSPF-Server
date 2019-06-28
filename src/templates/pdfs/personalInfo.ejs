@@ -56,6 +56,48 @@
             <span class="key">Introduction: </span>
             <span class="value"><%= student.personalInfo.introduction %></span>
         </div>
+        <%if (student.personalInfo.gender) { %>
+            <div>
+                <span class="key">Gender: </span>
+                <span class="value"><%= student.personalInfo.gender %></span>
+            </div>
+        <% } %>
+        <%if (student.personalInfo.disability.status) { %>
+            <div>
+                <span class="key">Disability status: </span>
+                <span class="value"><%= student.personalInfo.disability.status %></span>
+            </div>
+            <%if (student.personalInfo.disability.status=='Yes') { %>
+                <div>
+                    <span class="key">Disability description: </span>
+                    <span class="value"><%= student.personalInfo.disability.description %></span>
+                </div>
+            <% } %>
+        <% } %>
+        <%if (student.personalInfo.nationality) { %>
+            <div>
+                <span class="key">Nationality: </span>
+                <span class="value"><%= student.personalInfo.nationality %></span>
+            </div>
+        <% } %>
+        <%if (student.personalInfo.firstGenStudent) { %>
+            <div>
+                <span class="key">Are you a first generation college student from your family: </span>
+                <span class="value"><%= student.personalInfo.firstGenStudent %></span>
+            </div>
+        <% } %>
+        <%if (student.personalInfo.refugee) { %>
+            <div>
+                <span class="key">Have you been a refugee: </span>
+                <span class="value"><%= student.personalInfo.refugee %></span>
+            </div>
+        <% } %>
+        <%if (student.personalInfo.pronoun) { %>
+            <div>
+                <span class="key">Preferred pronoun: </span>
+                <span class="value"><%= student.personalInfo.pronoun %></span>
+            </div>
+        <% } %>
     </div>
 </body>
 </html>
