@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 
 // Importing config/env variables
@@ -20,6 +21,7 @@ exports.checkFormSubmission = (student) => {
         student.personalInfo.contactNumberWhatsapp &&
         student.personalInfo.tshirtSize &&
         student.personalInfo.introduction &&
+        student.personalInfo.pronoun &&
         student.certificates &&
         student.certificates.gradeSheetSem1 &&
         student.certificates.instiCertificate &&
@@ -35,24 +37,44 @@ exports.checkFormSubmission = (student) => {
         student.essays.final.society &&
         student.signature
     );
+
+    if(student.personalInfo.disability.status && student.personalInfo.disability.status=='Yes')
+        bool = bool && student.personalInfo.disability.description;
+
     return bool;
 }
 
 exports.returnFilesLocationAsArray = async (student) => {
     try {
+        let bool = true;
         let filesPathArray = new Array();
 
         // Add personalInfo pdf
-        filesPathArray.push(path.join(config.directory.PUBLIC_DIR,student.personalInfo.filePath));
+        let personalInfoPath = path.join(config.directory.PUBLIC_DIR,student.personalInfo.filePath);
+        bool = bool && fs.existsSync(personalInfoPath);
+        filesPathArray.push(personalInfoPath);
+        console.log(personalInfoPath);
 
         // Add project abstract
-        filesPathArray.push(path.join(config.directory.PUBLIC_DIR,student.abstract.projectAbstract));
+        let abstractPath = path.join(config.directory.PUBLIC_DIR,student.abstract.projectAbstract);
+        bool = bool && fs.existsSync(abstractPath);
+        filesPathArray.push(abstractPath);
 
         // Add final version of essays (SOP, Community, Society)
         let finalEssays = student.essays.final.toJSON();
         Object.values(finalEssays).forEach( (relativePath) => {
-            filesPathArray.push(path.join(config.directory.PUBLIC_DIR,relativePath));
+            let location = path.join(config.directory.PUBLIC_DIR,relativePath);
+            bool = bool && fs.existsSync(location);
+            filesPathArray.push(location);
         });
+
+        if(!bool){
+            return {
+                status_code: 400,
+                message: 'File(s) not found. Try uploading again!',
+                data: {}
+            }
+        }
 
         return {
             status_code: 200,

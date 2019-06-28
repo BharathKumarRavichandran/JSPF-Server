@@ -37,7 +37,7 @@ exports.viewApplication = async (req, res, next) => {
         // Generate pdf with personal information, certificates and grade sheets
         let genPdfResponse = await pdfUtil.generatePdf(student,ejsPath,destinationFilePath);
         if(genPdfResponse.status_code!=200){
-            logger.error(error.toString());
+            logger.error(genPdfResponse.message.toString());
             return res.status(genPdfResponse.status_code).json({
                 status_code: genPdfResponse.status_code,
                 message: genPdfResponse.message,
@@ -52,6 +52,14 @@ exports.viewApplication = async (req, res, next) => {
 
         // Add file paths to merge all pdfs to create student application
         const filesResponse = await formUtil.returnFilesLocationAsArray(student);
+        if(filesResponse.status_code!=200){
+            return res.status(filesResponse.status_code).json({
+                status_code: filesResponse.status_code,
+                message: filesResponse.message,
+                data: {}
+            });
+        }
+
         const applicationFileName = student.applicationNumber + '_application_' + randomstring.generate(4) + '_' + Date.now() + '.pdf';
         const applicationRelativePath = path.join('uploads',student.applicationNumber,applicationFileName);  
         const applicationDestinationPath = path.join(config.directory.UPLOADS_DIR,student.applicationNumber,applicationFileName);

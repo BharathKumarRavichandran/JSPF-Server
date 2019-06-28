@@ -6,18 +6,33 @@ const wkhtmltopdf = require('wkhtmltopdf');
 // Importing config/env variables
 const logger = require('../config/winston');
 
+const exportHTML = async (html,pdfOptions) => {
+	return new Promise((resolve, reject) => {
+		wkhtmltopdf(html, pdfOptions, (error) => {
+			if (error) {
+                logger.error(error);
+				reject(error);
+			} else {
+				resolve();
+			}
+		});
+	});
+}
 
-exports.generatePdf = async(student,ejsPath,destinationFilePath) => {
+exports.generatePdf = async (student,ejsPath,destinationFilePath) => {
     try {
-        let compiledEJS = ejs.compile(fs.readFileSync(ejsPath, 'utf8'));
-        let html = compiledEJS({student: student});
+        let compileOptions = {
+            async: true
+        };
+        let compiledEJS = await ejs.compile(fs.readFileSync(ejsPath, 'utf8'),compileOptions);
+        let html = await compiledEJS({student: student});
         
-        let options = {
+        let pdfOptions = {
             pageSize: 'Letter',
             output: destinationFilePath
         };
 
-        await wkhtmltopdf(html,options);
+        await exportHTML(html, pdfOptions);
         
         return {
             status_code: 200,
