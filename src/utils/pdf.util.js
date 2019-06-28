@@ -1,9 +1,11 @@
+const delay = require('delay');
 const ejs = require('ejs');
 const fs = require('fs');
 const pdfMerge = require('easy-pdf-merge');
 const wkhtmltopdf = require('wkhtmltopdf');
 
 // Importing config/env variables
+const config = require('../config/config');
 const logger = require('../config/winston');
 
 const exportHTML = async (html,pdfOptions) => {
@@ -25,14 +27,27 @@ exports.generatePdf = async (student,ejsPath,destinationFilePath) => {
             async: true
         };
         let compiledEJS = await ejs.compile(fs.readFileSync(ejsPath, 'utf8'),compileOptions);
-        let html = await compiledEJS({student: student});
+        let html = await compiledEJS({
+            student: student,
+            PUBLIC_DIR: config.directory.PUBLIC_DIR,
+            START_YEAR: config.date.START_YEAR,
+            END_YEAR: config.date.END_YEAR
+        });
+
+        console.log(html);
         
         let pdfOptions = {
-            pageSize: 'Letter',
-            output: destinationFilePath
+            pageSize: 'A4',
+            output: destinationFilePath,
+            "margin-top": '20mm',
+            "margin-bottom": '20mm',
+            "margin-left": '20mm',
+            "margin-right": '20mm',
         };
 
         await exportHTML(html, pdfOptions);
+
+        await delay(3000);
         
         return {
             status_code: 200,
@@ -69,7 +84,9 @@ const promisePdfMerger = (sourceFilesArray,destinationFilePath) => {
 
 exports.mergePdf = async (sourceFilesArray,destinationFilePath) => {
     try {
-        let mergerResponse = await promisePdfMerger(sourceFilesArray,destinationFilePath)
+        let mergerResponse = await promisePdfMerger(sourceFilesArray,destinationFilePath);
+
+        await delay(4000);
         return {
             status_code: mergerResponse.status_code,
             message: mergerResponse.message,
