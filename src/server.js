@@ -7,9 +7,9 @@ const expressValidator = require('express-validator');
 const logger = require('./config/winston');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const signale = require('signale');
 const session = require('express-session');
-
+const sgMail = require('@sendgrid/mail');
+const signale = require('signale');
 
 //Importing routes
 const routes = require('./routes/index.router');
@@ -32,6 +32,10 @@ const corsOptions = {
 // Initialising express
 const app = express();
 const router = express.Router();
+
+
+// Configuring public path
+app.use(express.static(config.directory.PUBLIC_DIR));
 
 // Configure loggers
 app.use(morgan('combined', { stream: logger.stream }));
@@ -82,6 +86,10 @@ app.use(session({
 	resave: true,
 	saveUninitialized: false
 }));
+
+
+// Set Sendgrid API key
+sgMail.setApiKey(config.key.SENDGRID_API_KEY);
 
 app.use(routes);
 
