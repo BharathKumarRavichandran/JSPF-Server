@@ -53,7 +53,6 @@ exports.returnFilesLocationAsArray = async (student) => {
         let personalInfoPath = path.join(config.directory.PUBLIC_DIR,student.personalInfo.filePath);
         bool = bool && fs.existsSync(personalInfoPath);
         filesPathArray.push(personalInfoPath);
-        console.log(personalInfoPath);
 
         // Add project abstract
         let abstractPath = path.join(config.directory.PUBLIC_DIR,student.abstract.projectAbstract);

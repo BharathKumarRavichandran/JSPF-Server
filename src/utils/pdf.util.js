@@ -34,8 +34,6 @@ exports.generatePdf = async (student,ejsPath,destinationFilePath) => {
             END_YEAR: config.date.END_YEAR
         });
 
-        console.log(html);
-        
         let pdfOptions = {
             pageSize: 'A4',
             output: destinationFilePath,
