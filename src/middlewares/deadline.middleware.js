@@ -2,13 +2,27 @@
 const config = require('../config/config');
 const logger = require('../config/winston');
 
+
+function dateDiffInDays(a, b) {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const utc1 = Date.UTC(a.getFullYear(),a.getMonth(),a.getDate(),a.getHours(),a.getMinutes(),a.getSeconds());
+    const utc2 = Date.UTC(b.getFullYear(),b.getMonth(),b.getDate(),b.getHours(),b.getMinutes(),b.getSeconds());
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
+
+
 exports.sendToMentorsDeadline = async (req, res, next) => {
     try {
-        const deadline = new Date(`${config.date.END_DATE_JS}`);
-        const gap = deadline.getDate()-5;
-        const dateNow = new Date();
+        let deadline = new Date(`${config.date.END_DATE_JS}`);
+        deadline.setHours(23);
+        deadline.setMinutes(59);
+        deadline.setSeconds(59);
+
+        const dateTimeNow = new Date();
         
-        if(dateNow < gap){
+        const dateDiff = dateDiffInDays(dateTimeNow,deadline);
+
+        if(dateDiff>=5){
             return next();
         }
 
@@ -31,11 +45,16 @@ exports.sendToMentorsDeadline = async (req, res, next) => {
 
 exports.finalProjectDeadline = async (req, res, next) => {
     try {
-        const deadline = new Date(`${config.date.END_DATE_JS}`);
-        const gap = deadline.getDate()-30;
-        const dateNow = new Date();
+        let deadline = new Date(`${config.date.END_DATE_JS}`);
+        deadline.setHours(23);
+        deadline.setMinutes(59);
+        deadline.setSeconds(59);
+
+        const dateTimeNow = new Date();
         
-        if(dateNow > gap){
+        const dateDiff = dateDiffInDays(dateTimeNow,deadline);
+
+        if(dateDiff<=30 && dateDiff>=0){
             return next();
         }
 
