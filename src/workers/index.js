@@ -98,6 +98,7 @@ queue.process('mailSummary', async (job, done)=>{
 
 queue.process('driveUploadFinal', async (job, done)=>{
     try {
+        let email = job.data.email;
         let finalArchivePath = job.data.finalArchivePath;
 
         let uploadResponse = await googleDriveUtil.uploadFinalApplication(finalArchivePath);
