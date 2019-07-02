@@ -8,6 +8,7 @@ COPY package*.json ./
 RUN npm install --only=production
 COPY . ./
 
+EXPOSE 5000
 EXPOSE 8000
 
-CMD ["node", "index.js"]
+CMD ./run_server.sh
