@@ -26,8 +26,9 @@ Backend for Jitheshraj Scholarship Portal Form.
 6. Start `MongoDB` service - `sudo service mongod start` 
 7. Start application and kue server - `node index`
 8. Open a new terminal and start kue workers - `node /src/workers`
-9. Access kue API and dashboard from http://localhost at its configured _port_ number. Or at http://localhost:5000/api and http://localhost:5000/kue respectively, by default.
-10. Install _JSPF-Web_ if needed, from [BharathKumarRavichandran/JSPF-Web](https://github.com/BharathKumarRavichandran/JSPF-Web)
+9. Instead, to start both servers and workers - `./run_server.sh`
+10. Access kue API and dashboard from http://localhost at its configured _port_ number. Or at http://localhost:5000/api and http://localhost:5000/kue respectively, by default.
+11. Install _JSPF-Web_ if needed, from [BharathKumarRavichandran/JSPF-Web](https://github.com/BharathKumarRavichandran/JSPF-Web)
 
 #### Troubleshooting
 * If you face some version incompatability issues while installing/running, check your `node` and `npm` versions and ensure it is compatible with the project. (Tip: Use nvm :p)
