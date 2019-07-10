@@ -13,6 +13,6 @@ router.post('/mentors/society/send', essayController.sendSocietyToMentors);
 router.post('/final/sop/upload', essayController.uploadFinalSOP);
 router.post('/final/community/upload', essayController.uploadFinalCommunity);
 router.post('/final/society/upload', essayController.uploadFinalSociety);
-router.post('/final/view/all', essayController.viewFinalEssays);
+router.get('/final/view/all', essayController.viewFinalEssays);
 
 module.exports = router;

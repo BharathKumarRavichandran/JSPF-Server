@@ -10,6 +10,6 @@ const deadlineMiddleware = require('../middlewares/deadline.middleware');
 router.post('/mentors/send', deadlineMiddleware.sendToMentorsDeadline, abstractController.sendDocLink);
 router.post('/final-abstract/upload', deadlineMiddleware.finalProjectDeadline, abstractController.uploadFinalAbstract);
 router.post('/supporting-files/upload', deadlineMiddleware.finalProjectDeadline, abstractController.uploadSupportingFiles);
-router.post('/final/view/all', abstractController.viewAbstract);
+router.get('/final/view/all', abstractController.viewAbstract);
 
 module.exports = router;

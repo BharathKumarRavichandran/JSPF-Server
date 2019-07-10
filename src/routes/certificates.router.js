@@ -8,6 +8,6 @@ router.post('/gradeSheetSem1/upload', certificatesController.uploadGradeSheetSem
 router.post('/instiCertificate/upload', certificatesController.uploadInstiCertificate);
 router.post('/nonInstiCertificate/upload', certificatesController.uploadNonInstiCertificate);
 router.post('/gradeSheetMOOC/upload', certificatesController.uploadGradeSheetMOOC);
-router.post('/view/all', certificatesController.viewCertificates);
+router.get('/view/all', certificatesController.viewCertificates);
 
 module.exports = router;

@@ -5,6 +5,6 @@ const personalInfoController = require('../controllers/personalInfo.controller')
 
 // Student's personal information routes
 router.post('/update', personalInfoController.updateInfo);
-router.post('/view/all', personalInfoController.getInfo);
+router.get('/view/all', personalInfoController.getInfo);
 
 module.exports = router;

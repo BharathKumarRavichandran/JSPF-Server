@@ -4,7 +4,7 @@ const router = require('express').Router();
 const requirementsController = require('../controllers/requirements.controller');
 
 // Student's unfilled field routes
-router.post('/pending/all', requirementsController.getAllPendingRequirements);
-router.post('/pending/necessary', requirementsController.getNecessaryPendingRequirements);
+router.get('/pending/all', requirementsController.getAllPendingRequirements);
+router.get('/pending/necessary', requirementsController.getNecessaryPendingRequirements);
 
 module.exports = router;
