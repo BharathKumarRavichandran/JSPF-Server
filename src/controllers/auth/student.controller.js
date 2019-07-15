@@ -27,18 +27,14 @@ exports.sendVerificationCode = async (req, res) => {
             });
         }
         const email = sanitize(req.body.email);
-        const studentExists = await Student.findOne({email: email}).exec();
-        if(studentExists){
-            logger.warn(`Email already exists for email : ${email}`);
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Email already exists!',
-                data: {}
-            });
+        let student = await Student.findOne({email: email}).exec();
+        
+        // If student with email does not exist
+        if(!student){
+            student = new Student();
+            student.email = email;
         }
 
-        let student = new Student();
-        student.email = email;
         student.verificationCode = randomstring.generate(6);
         student.isVerified1 = false;
         
@@ -61,52 +57,6 @@ exports.sendVerificationCode = async (req, res) => {
             status_code: 400,
             message: error.toString(),
             data: {}
-        });
-    }
-}
-
-exports.reSendVerificationCode = async (req, res) => {
-    try{
-        if(!req.body.email || !validator.isEmail(req.body.email)){
-            logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
-                data: {}
-            });
-        }
-        const email = req.body.email;
-        const student = await Student.findOne({email: email}).exec();
-        if(!student){
-            logger.warn(`'Sorry, this email ${email} is not registered. Please register with your email first.'`);
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Sorry, this email is not registered. Please register with your email first.',
-                data: {}
-            });
-        }
-
-        student.verificationCode = randomstring.generate(6);
-        student.isVerified1 = false;
-        
-        let mailResponse = await sendgridMailUtil.sendVerificationCode(student.email,student.verificationCode);
-        if(mailResponse.status_code!=200){
-            throw Error(mailResponse.message);
-        }
-        
-        let newStudent = await student.save();
-        
-        logger.info(`An email with new verification code has been sent to your email: ${newStudent.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: `An email with new verification code has been sent to your email: ${newStudent.email}`,
-            data: {}
-        });
-    } catch(error){
-        logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString()
         });
     }
 }
@@ -174,17 +124,8 @@ exports.sendInstiVerificationCode = async (req, res) => {
 
         const email = req.session.student.email;
         const instiEmail = sanitize(req.body.instiEmail);
-        const instiEmailExists = await Student.findOne({instiEmail: instiEmail}).exec();
-        if(instiEmailExists){
-            logger.warn(`Institute email already exists: ${req.body.instiEmail}`);
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Institute email already exists!',
-                data: {}
-            });
-        }
-
         let student = await Student.findOne({email: email}).exec();
+
         student.instiEmail = instiEmail;
         student.verificationCode = randomstring.generate(6);
         student.isVerified2 = false;
@@ -200,68 +141,6 @@ exports.sendInstiVerificationCode = async (req, res) => {
         return res.status(200).json({
             status_code: 200,
             message: `An email with verification code has been sent to your email: ${newStudent.instiEmail}`,
-            data: {}
-        });
-    } catch(error){
-        logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
-            data: {}
-        });
-    }
-}
-
-exports.reSendInstiVerificationCode = async (req, res) => {
-    try{
-        if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail)){
-            logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
-                data: {}
-            });
-        }
-        if(!registerUtil.checkEduEmail(req.body.instiEmail)){
-            logger.warn(`Please enter a valid institute(.edu) email address : ${req.body.instiEmail}`);
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Please enter a valid institute(.edu) email address',
-                data: {}
-            });
-        }
-
-        const email = req.session.student.email;
-        const instiEmail = req.body.instiEmail;
-        const student = await Student.findOne({
-            email: email, 
-            instiEmail: instiEmail
-        }).exec();
-        if(!student){
-            if(!registerUtil.checkEduEmail(req.body.instiEmail)){
-                logger.warn(`Email is not registered: ${req.body.instiEmail}`);
-                return res.status(400).json({
-                    status_code: 400,
-                    message: 'Sorry, this email is not registered.',
-                    data: {}
-                });
-            }
-        }
-
-        student.verificationCode = randomstring.generate(6);
-        student.isVerified2 = false;
-        
-        let mailResponse = await sendgridMailUtil.sendVerificationCode(student.instiEmail,student.verificationCode);
-        if(mailResponse.status_code!=200){
-            throw Error(mailResponse.message);
-        }
-
-        let newStudent = await student.save();
-        
-        logger.info(`An email with new verification code has been sent to your email: ${newStudent.instiEmail}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: `An email with new verification code has been sent to your email: ${newStudent.instiEmail}`,
             data: {}
         });
     } catch(error){

@@ -11,12 +11,10 @@ const checkAccountInactivation = authMiddleware.checkAccountInactivation;
 
 // Primary email routes
 router.post('/email/verification-code/send', checkAccountInactivation, studentController.sendVerificationCode);
-router.post('/email/verification-code/resend', checkAccountInactivation, studentController.reSendVerificationCode);
 router.get('/email/verification-code/check', checkAccountInactivation, studentController.checkVerificationCode);
 
 // Institute(.edu) email routes
 router.post('/insti-email/verification-code/send', checkStudentSession, checkInstiVerificationAccess, studentController.sendInstiVerificationCode);
-router.post('/insti-email/verification-code/resend', checkStudentSession, checkInstiVerificationAccess, studentController.reSendInstiVerificationCode);
 router.post('/insti-email/verification-code/verify', checkStudentSession, checkInstiVerificationAccess, studentController.verifyInstiEmail);
 
 // Password routes

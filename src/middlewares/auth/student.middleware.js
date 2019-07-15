@@ -75,10 +75,10 @@ exports.checkInstiVerificationAccess = async(req, res, next) => {
             return next();
         }
 
-        logger.info(`Requested resource is blocked for email: ${email}`);
+        logger.info(`Already verified or Requested resource is blocked for email: ${email}`);
         return res.status(400).json({
             status_code: 400,
-            message: `Cant access the required resource.`,
+            message: `Can't access the required resource.`,
             data: {}
         });
     } catch(error){
