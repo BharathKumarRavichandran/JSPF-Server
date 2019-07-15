@@ -65,7 +65,7 @@ const studentSchema = new mongoose.Schema({
 			status: {
 				type: String,
 				enum: ['','Yes','No'],
-				default: null
+				default: ''
 			},
 			description: {
 				type: String,
@@ -79,17 +79,17 @@ const studentSchema = new mongoose.Schema({
 		firstGenStudent: {
 			type: String,
 			enum: ['','Yes','No'],
-			default: null
+			default: ''
 		},
 		refugee: {
 			type: String,
 			enum: ['','Yes','Not applicable'],
-			default: null
+			default: ''
 		},
 		pronoun: {
 			type: String,
 			enum: ['',`He/him/his`,`She/her/hers`,`They/them/their/theirs`],
-			default: null
+			default: ''
 		},
 		filePath: {
 			type: String,
