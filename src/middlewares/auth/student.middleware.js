@@ -30,7 +30,15 @@ exports.checkStudentSession = (req, res, next) => {
 
 exports.checkAccountInactivation = async(req, res, next) => {
     try {
-        if(!req.body.email || !validator.isEmail(req.body.email)){
+        
+        let email = null;
+        
+        if(req.method=='GET')
+            email = req.query.email;
+        else if(req.method=='POST')
+            email = req.body.email;
+   
+        if(!email || !validator.isEmail(email)){
             logger.warn('Invalid parameters');
             return res.status(400).json({
                 status_code: 400,
@@ -38,7 +46,6 @@ exports.checkAccountInactivation = async(req, res, next) => {
                 data: {}
             });
         }
-        const email = req.body.email;
         let student = await Student.findOne({email: email}).exec();
         if(!student || !student.isVerified1){
             return next();

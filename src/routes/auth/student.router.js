@@ -17,7 +17,7 @@ router.get('/email/verification-code/check', checkAccountInactivation, studentCo
 // Institute(.edu) email routes
 router.post('/insti-email/verification-code/send', checkStudentSession, checkInstiVerificationAccess, studentController.sendInstiVerificationCode);
 router.post('/insti-email/verification-code/resend', checkStudentSession, checkInstiVerificationAccess, studentController.reSendInstiVerificationCode);
-router.get('/insti-email/verification-code/verify', checkStudentSession, checkInstiVerificationAccess, studentController.verifyInstiEmail);
+router.post('/insti-email/verification-code/verify', checkStudentSession, checkInstiVerificationAccess, studentController.verifyInstiEmail);
 
 // Password routes
 router.post('/password/forgot', studentController.forgotPassword);

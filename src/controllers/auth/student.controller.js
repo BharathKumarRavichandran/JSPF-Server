@@ -113,7 +113,7 @@ exports.reSendVerificationCode = async (req, res) => {
 
 exports.checkVerificationCode = async (req, res) => {
     try{
-        if(!req.body.email || !validator.isEmail(req.body.email) || !req.body.verificationCode){
+        if(!req.query.email || !validator.isEmail(req.query.email) || !req.query.verificationCode){
             logger.warn('Invalid parameters');
             return res.status(400).json({
                 status_code: 400,
@@ -122,8 +122,8 @@ exports.checkVerificationCode = async (req, res) => {
             });
         }
 
-        const email = req.body.email;
-        const verificationCode = req.body.verificationCode;
+        const email = req.query.email;
+        const verificationCode = req.query.verificationCode;
         const student = await Student.findOne({
             email: email, 
             verificationCode: verificationCode
