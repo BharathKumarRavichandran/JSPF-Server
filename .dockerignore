@@ -15,6 +15,9 @@ Dockerfile*
 .git
 .gitignore
 
+.env.example
+*.example.json
+
 *.md
 !README.md
 LICENSE
