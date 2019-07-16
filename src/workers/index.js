@@ -16,6 +16,27 @@ queue.on('error', (err) => {
     logger.error(error.toString());
 });
 
+queue.process('mailMentor', async (job, done)=>{
+    try {
+        let mentorEmail = job.data.mentorEmail;
+        let studentName = job.data.studentName;
+        let docLink = job.data.docLink;
+        let submissionType = job.data.submissionType;
+
+        let mailResponse = await sendgridMailUtil.sendEmailToMentors(mentorEmail,studentName,docLink,submissionType);
+        if(mailResponse.status_code!=200){
+            logger.error(mailResponse.message);
+            done(new Error(mailResponse.message));
+        }
+
+        logger.info(`Successfully mailed to mentor ${mentorEmail} for student: ${studentName}`);
+        done();
+
+    } catch(error) {
+        logger.error(error.toString());
+        done(new Error(error));
+    }
+});
 
 queue.process('archiveSummary', async (job, done)=>{
     try {
