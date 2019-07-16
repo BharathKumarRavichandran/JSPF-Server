@@ -1,6 +1,7 @@
 const delay = require('delay');
 const ejs = require('ejs');
 const fs = require('fs');
+const HttpStatus = require('http-status-codes');
 const pdfMerge = require('easy-pdf-merge');
 const wkhtmltopdf = require('wkhtmltopdf');
 
@@ -47,16 +48,18 @@ exports.generatePdf = async (student,ejsPath,destinationFilePath) => {
 
         await delay(3000);
         
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: 'Success',
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
 
     } catch (error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -71,9 +74,11 @@ const promisePdfMerger = (sourceFilesArray,destinationFilePath) => {
                 reject(error);
             }
     
+            let status_code = 200;
             let response = {
-                status_code: 200,
-                message: 'PDFs have been successfully merged.'
+                status_code: status_code,
+                message: 'PDFs have been successfully merged.',
+                data: {}
             }
             resolve(response);
         });
@@ -92,8 +97,9 @@ exports.mergePdf = async (sourceFilesArray,destinationFilePath) => {
         }
     } catch (error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }

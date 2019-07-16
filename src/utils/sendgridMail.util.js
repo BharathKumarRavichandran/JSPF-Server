@@ -1,4 +1,5 @@
 const fs = require('fs');
+const HttpStatus = require('http-status-codes');
 const logger = require('../config/winston');
 const path = require('path');
 const sgMail = require('@sendgrid/mail');
@@ -31,15 +32,17 @@ exports.sendVerificationCode = async (recipientEmail,verificationCode) => {
             `,
         };
         let mail = await sgMail.send(message);
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: `Success`,
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
     } catch(error){
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -71,15 +74,17 @@ exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) =
             `,
         };
         let mail = await sgMail.send(message);
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: `Success`,
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
     } catch(error){
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -108,15 +113,17 @@ exports.sendEmailToMentors = async (mentorEmail,studentName,docLink,submissionTy
             `,
         };
         let mail = await sgMail.send(message);
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: `Success`,
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
     } catch(error){
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -155,15 +162,17 @@ exports.sendApplicationSummary = async (recipientEmail,applicationSummaryPath) =
         };
         let mail = await sgMail.send(message);
 
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: `Success`,
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
     } catch(error){
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }

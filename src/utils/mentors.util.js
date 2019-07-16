@@ -1,4 +1,5 @@
 const fs = require('fs');
+const HttpStatus = require('http-status-codes');
 const kue = require('kue');
 const queue = kue.createQueue();
 const logger = require('../config/winston');
@@ -28,16 +29,18 @@ exports.createMailJobs = async (studentName, docLink, submissionType) => {
             .save();
 
         }
-        logger.info(`Added mentor email jobs for student: ${studentName}`);        
+        logger.info(`Added mentor email jobs for student: ${studentName}`);
+        let status_code = 200;       
         return {
-            status_code: 200,
-            message: `Success`,
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
     } catch(error){
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }

@@ -1,5 +1,6 @@
 const archiver = require('archiver');
 const fs = require('fs');
+const HttpStatus = require('http-status-codes');
 const path = require('path');
 
 // Importing config/env variables
@@ -69,16 +70,18 @@ exports.archiveSummary = async (student) => {
         // Write everything to disk
         await archive.finalize();
 
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: 'Success',
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
 
     } catch (error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -139,8 +142,10 @@ exports.archiveAllFinal = async (student) => {
                 bool = bool && fs.existsSync(location);
                 archive.file(location,{name: path.basename(location)});
             } catch (error) {
+                logger.error(error.toString());
+                let status_code = 500;
                 return {
-                    status_code: 400,
+                    status_code: status_code,
                     message: error.toString(),
                     data: {}
                 }
@@ -164,8 +169,10 @@ exports.archiveAllFinal = async (student) => {
                 bool = bool && fs.existsSync(location);
                 archive.file(location,{name: path.basename(relativePath)});
             } catch (error) {
+                logger.error(error.toString());
+                let status_code = 500;
                 return {
-                    status_code: 400,
+                    status_code: status_code,
                     message: error.toString(),
                     data: {}
                 }
@@ -180,15 +187,17 @@ exports.archiveAllFinal = async (student) => {
         // Write everything to disk
         await archive.finalize();
 
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: 'Success',
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         }
     } catch (error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }

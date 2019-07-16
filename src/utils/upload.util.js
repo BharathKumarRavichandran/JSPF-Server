@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const path = require('path');
 const multer = require('multer');
 const util = require('util');
@@ -19,8 +20,9 @@ class Uploader {
             },
             onError : (error, next) => {
                 logger.error(error.toString());
+                let status_code = 500;
                 return {
-                    status_code: 400,
+                    status_code: status_code,
                     message: error.toString(),
                     data: {}
                 }
@@ -57,8 +59,9 @@ class Uploader {
             let response = await upload(req, res);
 
             logger.info('File has been successfully uploaded.');
+            let status_code = 200;
             return {
-                status_code: 200,
+                status_code: status_code,
                 message: 'File has been successfully uploaded.',
                 data: {
                     file: req.file
@@ -66,9 +69,10 @@ class Uploader {
             }
         } catch (error) {
             logger.error(error.toString());
+            let status_code = 500;
             return {
-                status_code: 400,
-                message: error.toString(),
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             }
         }
@@ -80,8 +84,9 @@ class Uploader {
             let response = await upload(req, res);
             
             logger.info('Files have been successfully uploaded.');
+            let status_code = 200;
             return {
-                status_code: 200,
+                status_code: status_code,
                 message: 'Files have been successfully uploaded.',
                 data: {
                     files: req.files
@@ -89,9 +94,10 @@ class Uploader {
             }
         } catch (error) {
             logger.error(error.toString());
+            let status_code = 500;
             return {
-                status_code: 400,
-                message: error.toString(),
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             }
         }

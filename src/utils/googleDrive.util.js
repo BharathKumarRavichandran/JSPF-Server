@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { google } = require('googleapis');
+const HttpStatus = require('http-status-codes');
 const path = require('path');
 const readline = require('readline');
 
@@ -34,16 +35,18 @@ const authorize = async (credentials) => {
 
         }
         
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: 'Success',
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: OAuth2Client
         }
 
     } catch(error){
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -77,8 +80,9 @@ const getAccessToken = async (OAuth2Client) => {
 
         if(config.environment=='production'){
             logger.info('Authorization required in production');
+            let status_code = 401;
             return {
-                status_code: 400,
+                status_code: status_code,
                 message: 'Authorization required in production',
                 data: {}
             };
@@ -95,17 +99,19 @@ const getAccessToken = async (OAuth2Client) => {
         await fs.writeFileSync(TOKEN_PATH, JSON.stringify(token));
         logger.info(`OAuth2Client token stored to ${TOKEN_PATH}`);
 
+        let status_code = 200;
         return {
-            status_code: 200,
-            message: 'Success',
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 OAuth2Client: OAuth2Client
             }
         };
     } catch(error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         };
@@ -130,8 +136,9 @@ const useJWTAuthClient = async () => {
         await jwtClient.authorize();
         
         logger.info(`Successfully authorized by jwtClient`);
+        let status_code = 200;
         return {
-            status_code: 200,
+            status_code: status_code,
             message: 'Successfully connected',
             data: {
                 client: jwtClient
@@ -140,8 +147,9 @@ const useJWTAuthClient = async () => {
 
     } catch(error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -157,8 +165,9 @@ const useOAuth2Client = async () => {
         }
 
         logger.info(`Successfully retrieved token by OAuth2Client`);
+        let status_code = 200;
         return {
-            status_code: 200,
+            status_code: status_code,
             message: 'Successfully retrieved token',
             data: {
                 client: authResponse.data.OAuth2Client
@@ -167,8 +176,9 @@ const useOAuth2Client = async () => {
 
     } catch (error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
@@ -192,8 +202,9 @@ exports.uploadFinalApplication = async (finalArchivePath) => {
 
         if(!fs.existsSync(finalArchivePath)){
             logger.error(`Final archive file doesn't exists`);
+            let status_code = 500;
             return {
-                status_code: 400,
+                status_code: status_code,
                 message: `Final archive file doesn't exists`,
                 data: {}
             }
@@ -223,8 +234,9 @@ exports.uploadFinalApplication = async (finalArchivePath) => {
         
     } catch (error) {
         logger.error(error.toString());
+        let status_code = 500;
         return {
-            status_code: 400,
+            status_code: status_code,
             message: error.toString(),
             data: {}
         }
