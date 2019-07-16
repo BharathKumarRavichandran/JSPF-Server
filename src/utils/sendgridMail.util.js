@@ -86,6 +86,43 @@ exports.sendPasswordVerificationCode = async (recipientEmail,verificationCode) =
     }
 }
 
+exports.sendEmailToMentors = async (mentorEmail,studentName,docLink,submissionType) => {
+    try {
+        const message = {
+            from: config.email.SITE_NOREPLY_EMAIL,
+            to: mentorEmail,
+            subject: 'Jitheshraj Scholarship Application',
+            html: `
+                <div>
+                    <div>Hello Sir/Ma'am,</div>
+                    <br/>
+                    <div>Mr.${studentName} wants your suggestion on their ${submissionType}.</div>
+                    <div>Kindly, check the URL ${docLink} and give your suggestion.</div>
+                    <div>Thank you.</div>
+                    <br/>
+                    <div>Email info@jrscholarship.org if you have any questions.</div>
+                    <br/>
+                    <div>Regards,</div>
+                    <div>Team JSPF</div>
+                </div>
+            `,
+        };
+        let mail = await sgMail.send(message);
+        return {
+            status_code: 200,
+            message: `Success`,
+            data: {}
+        }
+    } catch(error){
+        logger.error(error.toString());
+        return {
+            status_code: 400,
+            message: error.toString(),
+            data: {}
+        }
+    }
+}
+
 exports.sendApplicationSummary = async (recipientEmail,applicationSummaryPath) => {
     try {
         let message = {
