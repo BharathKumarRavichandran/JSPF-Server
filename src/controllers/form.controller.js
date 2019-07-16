@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const kue = require('kue');
 const queue = kue.createQueue();
 const path = require('path');
@@ -26,18 +27,20 @@ exports.formAccess = async (req, res) => {
         }
 
         logger.info(`Form access for ${email}: ${access}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: `Success`,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 access: access
             }
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -51,18 +54,20 @@ exports.getApplicationNumber = async (req, res) => {
         let applicationNumber = student.applicationNumber;
 
         logger.info(`Application Number for ${email}: ${applicationNumber}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: `Success`,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 applicationNumber: applicationNumber
             }
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -75,8 +80,9 @@ exports.viewApplication = async (req, res) => {
         
         if(!formUtil.checkFormSubmission(student)){
             logger.warn('Please fill all required fields to submit form.');
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: `Please fill all required fields to submit form.`,
                 data: {}
             });
@@ -131,9 +137,10 @@ exports.viewApplication = async (req, res) => {
         let newStudent = await student.save();
 
         logger.info(`Generated merged pdf containing all submitted files for email: ${student.email}.`);
-        return res.status(200).json({
-            status_code: 200,
-            message: `Success`,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 applicationFilePath: newStudent.applicationFilePath
             }
@@ -141,9 +148,10 @@ exports.viewApplication = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -156,8 +164,9 @@ exports.submitForm = async (req, res) => {
         
         if(!formUtil.checkFormSubmission(student)){
             logger.warn('Please fill all required fields to submit form.');
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: `Please fill all required fields to submit form.`,
                 data: {}
             });
@@ -165,8 +174,9 @@ exports.submitForm = async (req, res) => {
         
         if(student.isSubmitted){
             logger.warn('Already submitted form.');
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: `Already submitted form.`,
                 data: {}
             });
@@ -217,9 +227,10 @@ exports.submitForm = async (req, res) => {
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

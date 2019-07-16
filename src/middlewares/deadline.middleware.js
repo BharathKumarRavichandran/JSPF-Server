@@ -1,3 +1,5 @@
+const HttpStatus = require('http-status-codes');
+
 // Importing config/env variables
 const config = require('../config/config');
 const logger = require('../config/winston');
@@ -27,17 +29,19 @@ exports.sendToMentorsDeadline = async (req, res, next) => {
         }
 
         logger.info(`Action(send to mentors) is not allowed`);
-        return res.status(400).json({
-            status_code: 400,
+        let status_code = 401;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `Sorry, can't send to mentors now.`,
             data: {}
         });
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -59,17 +63,19 @@ exports.finalProjectDeadline = async (req, res, next) => {
         }
 
         logger.info(`Action(project abstract upload) is not allowed`);
-        return res.status(400).json({
-            status_code: 400,
+        let status_code = 401;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: 'Sorry, project can be uploaded only 30 days before deadline.',
             data: {}
         });
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

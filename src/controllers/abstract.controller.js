@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const path = require('path');
 const randomstring = require('randomstring');
 const sanitize = require('mongo-sanitize');
@@ -17,9 +18,10 @@ exports.sendDocLink = async (req, res) => {
     try{
         if(!req.body.docLink){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -45,9 +47,10 @@ exports.sendDocLink = async (req, res) => {
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -86,9 +89,10 @@ exports.uploadFinalAbstract = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -135,9 +139,10 @@ exports.uploadSupportingFiles = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -149,9 +154,10 @@ exports.viewAbstract = async (req, res) => {
         const student = await Student.findOne({email: email}).select('abstract applicationNumber -_id').exec();
         
         logger.info(`Successfully retrieved abstract details for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 applicationNumber: student.applicationNumber,
                 abstract: student.abstract
@@ -159,9 +165,10 @@ exports.viewAbstract = async (req, res) => {
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

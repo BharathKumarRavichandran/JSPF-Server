@@ -1,3 +1,5 @@
+const HttpStatus = require('http-status-codes');
+
 const sanitize = require('mongo-sanitize');
 const validator = require('validator');
 
@@ -11,9 +13,10 @@ exports.updateSignature = async (req, res, next) => {
     try{
         if(!req.body.signature || validator.isEmpty(req.body.signature)){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -24,16 +27,18 @@ exports.updateSignature = async (req, res, next) => {
         await student.save();
         
         logger.info(`Successfully updated signature for email: ${student.email}.`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `Successfully updated signature.`,
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -45,9 +50,10 @@ exports.getSignature = async (req, res, next) => {
         let student = await Student.findOne({email: email}).select('signature applicationNumber -_id').exec();
         
         logger.info(`Successfully retrieved signature for email: ${student.email}.`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 applicationNumber: student.applicationNumber,
                 signature: student.signature
@@ -55,9 +61,10 @@ exports.getSignature = async (req, res, next) => {
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

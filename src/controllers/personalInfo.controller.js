@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const sanitize = require('mongo-sanitize');
 
 // Importing config/env variables
@@ -25,16 +26,18 @@ exports.updateInfo = async (req, res) => {
         await student.save();
         
         logger.info(`Successfully updated student's personal information for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `Successfully updated student's personal information`,
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -46,9 +49,10 @@ exports.getInfo = async (req, res) => {
         const student = await Student.findOne({email: email}).select('personalInfo applicationNumber -_id').exec();
         
         logger.info(`Successfully retrieved personal info for email: ${student.email}.`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 applicationNumber: student.applicationNumber,
                 personalInfo: student.personalInfo
@@ -56,9 +60,10 @@ exports.getInfo = async (req, res) => {
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

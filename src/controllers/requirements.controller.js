@@ -1,3 +1,5 @@
+const HttpStatus = require('http-status-codes');
+
 // Importing config/env variables
 const logger = require('../config/winston');
 
@@ -14,16 +16,18 @@ exports.getAllPendingRequirements = async (req, res) => {
         const allPendingRequirements = requirementsUtil.getAllPendingRequirements(student);
         
         logger.info(`Successfully retrieved all pending requirements for email: ${student.email}.`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: allPendingRequirements
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -36,16 +40,18 @@ exports.getNecessaryPendingRequirements = async (req, res) => {
         const necessaryPendingRequirements = requirementsUtil.getNecessaryPendingRequirements(student);
         
         logger.info(`Successfully retrieved all pending requirements for email: ${student.email}.`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: necessaryPendingRequirements
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

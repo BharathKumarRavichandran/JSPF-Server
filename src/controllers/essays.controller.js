@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const path = require('path');
 const sanitize = require('mongo-sanitize');
 const randomstring = require('randomstring');
@@ -17,9 +18,10 @@ exports.sendSOPToMentors = async (req, res) => {
     try{
         if(!req.body.sopLink){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -37,17 +39,19 @@ exports.sendSOPToMentors = async (req, res) => {
         await student.save();
         
         logger.info(`Successfully created mailing jobs and saved SOP link for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -57,9 +61,10 @@ exports.sendCommunityToMentors = async (req, res) => {
     try{
         if(!req.body.communityLink){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -78,17 +83,19 @@ exports.sendCommunityToMentors = async (req, res) => {
         await student.save();
         
         logger.info(`Successfully created mailing jobs and saved community essay link for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -98,9 +105,10 @@ exports.sendSocietyToMentors = async (req, res) => {
     try{
         if(!req.body.societyLink){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -119,17 +127,19 @@ exports.sendSocietyToMentors = async (req, res) => {
         await student.save();
         
         logger.info(`Successfully created mailing jobs and saved society essay link for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -168,9 +178,10 @@ exports.uploadFinalSOP = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -209,9 +220,10 @@ exports.uploadFinalCommunity = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -250,9 +262,10 @@ exports.uploadFinalSociety = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -264,9 +277,10 @@ exports.viewFinalEssays = async (req, res) => {
         const student = await Student.findOne({email: email}).select('essays applicationNumber -_id').exec();
         
         logger.info(`Successfully retrieved final essay links/details for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 applicationNumber: student.applicationNumber,
                 essays: student.essays
@@ -274,9 +288,10 @@ exports.viewFinalEssays = async (req, res) => {
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const mkdirp = require('mkdirp');
 const path = require('path');
 const randomstring = require('randomstring');
@@ -20,9 +21,10 @@ exports.sendVerificationCode = async (req, res) => {
     try{
         if(!req.body.email || !validator.isEmail(req.body.email)){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -46,16 +48,18 @@ exports.sendVerificationCode = async (req, res) => {
         let newStudent = await student.save();
         
         logger.info(`An email with verification code has been sent to your email: ${newStudent.email}`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `An email with verification code has been sent to your email: ${newStudent.email}`,
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -65,9 +69,10 @@ exports.checkVerificationCode = async (req, res) => {
     try{
         if(!req.query.email || !validator.isEmail(req.query.email) || !req.query.verificationCode){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -88,16 +93,18 @@ exports.checkVerificationCode = async (req, res) => {
         }
 
         logger.info(`Email verification code success for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -107,16 +114,18 @@ exports.sendInstiVerificationCode = async (req, res) => {
     try{
         if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail)){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
         if(!registerUtil.checkEduEmail(req.body.instiEmail)){
             logger.warn(`Please enter a valid institute(.edu) email address : ${req.body.instiEmail}`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Please enter a valid institute(.edu) email address',
                 data: {}
             });
@@ -138,16 +147,18 @@ exports.sendInstiVerificationCode = async (req, res) => {
         let newStudent = await student.save();
         
         logger.info(`An email with verification code has been sent to your email: ${newStudent.instiEmail}`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `An email with verification code has been sent to your email: ${newStudent.instiEmail}`,
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -157,16 +168,18 @@ exports.verifyInstiEmail = async (req, res) => {
     try{
         if(!req.body.instiEmail || !validator.isEmail(req.body.instiEmail) || !req.body.verificationCode){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
         if(!registerUtil.checkEduEmail(req.body.instiEmail)){
             logger.warn(`Please enter a valid institute(.edu) email address : ${req.body.instiEmail}`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Please enter a valid institute(.edu) email address',
                 data: {}
             });
@@ -183,8 +196,9 @@ exports.verifyInstiEmail = async (req, res) => {
         }).exec();
         if(!student){
             logger.warn(`Please check your email: ${email} and verification code.`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Please check your email and verification code.',
                 data: {}
             });
@@ -199,16 +213,18 @@ exports.verifyInstiEmail = async (req, res) => {
         await student.save();
 
         logger.info(`Institute email successfully verified : ${student.instiEmail}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -218,9 +234,10 @@ exports.forgotPassword = async (req, res) => {
     try{
         if(!req.body.email || !validator.isEmail(req.body.email)){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -228,8 +245,9 @@ exports.forgotPassword = async (req, res) => {
         let student = await Student.findOne({email: email}).exec();
         if(!student){
             logger.warn(`Email doesn't exists: ${email}`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: `Email doesn't exists!`,
                 data: {}
             });
@@ -244,16 +262,18 @@ exports.forgotPassword = async (req, res) => {
         await student.save();
         
         logger.info(`An email with verification code has been sent to email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `An email with verification code has been sent to your email: ${student.email}`,
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -263,9 +283,10 @@ exports.resetPassword = async (req, res) => {
     try{
         if(!req.body.email || !req.body.verificationCode || !req.body.password || !req.body.confirmPassword || !validator.isEmail(req.body.email)){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -273,8 +294,9 @@ exports.resetPassword = async (req, res) => {
         let student = await Student.findOne({email: email, verificationCode: req.body.verificationCode}).exec();
         if(!student){
             logger.warn(`Please check your email: ${email} and verification code.`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Please check your email and verification code.',
                 data: {}
             });
@@ -285,8 +307,9 @@ exports.resetPassword = async (req, res) => {
         
         if( !(password==confirmPassword) || (password.length<8) ){
             logger.warn(`Password Mismatch or Invalid password: ${email}`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Password Mismatch or Invalid password.',
                 data: {}
             });
@@ -294,8 +317,9 @@ exports.resetPassword = async (req, res) => {
 
         if(!passwordUtil.checkPasswordRule(password)){
             logger.warn(`Password rule not passed for email: ${student.email}`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Password must be atleast 8 characters in length and should contain 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.',
                 data: {}
             });
@@ -309,16 +333,18 @@ exports.resetPassword = async (req, res) => {
         await student.save();
         
         logger.info(`Password successfully reset for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `Password successfully reset.`,
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -328,9 +354,10 @@ exports.registerStudent = async (req, res) => {
     try{
         if(!registerUtil.checkEmptyInput(req)){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -340,8 +367,9 @@ exports.registerStudent = async (req, res) => {
         
         if( !(password==confirmPassword) || (password.length<8) ){
             logger.warn(`Password Mismatch or Invalid password: ${email}`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Password Mismatch or Invalid password.',
                 data: {}
             });
@@ -349,8 +377,9 @@ exports.registerStudent = async (req, res) => {
         
         if(!passwordUtil.checkPasswordRule(password)){
             logger.warn(`Password rule not passed for email: ${student.email}`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Password must be atleast 8 characters in length and should contain 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.',
                 data: {}
             });
@@ -363,8 +392,9 @@ exports.registerStudent = async (req, res) => {
         }).exec();
         if(!student){
             logger.warn(`Please check your email: ${email} and verification code.`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Please check your email and verification code.',
                 data: {}
             });
@@ -393,17 +423,19 @@ exports.registerStudent = async (req, res) => {
         let newStudent = await student.save();
         
         logger.info(`User with email: ${newStudent.email} successfully registered.`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: `User with email: ${newStudent.email} successfully registered.`,
             data: {}
         });
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -413,9 +445,10 @@ exports.loginStudent = async (req, res) => {
     try{
         if(!req.body.email || !req.body.password || !validator.isEmail(req.body.email)){
             logger.warn('Invalid parameters');
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Invalid parameters',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
                 data: {}
             });
         }
@@ -428,8 +461,9 @@ exports.loginStudent = async (req, res) => {
         }).exec();
         if(!student){
             logger.warn(`Please check your email ${email}, user account does not exists.`);
-            return res.status(400).json({
-                status_code: 400,
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Please check your email, user account does not exists.',
                 data: {}
             });
@@ -442,27 +476,30 @@ exports.loginStudent = async (req, res) => {
                 email: student.email
             }
 
-            logger.info(`User with email: ${student.email} successfully logged in.`)
-            return res.status(200).json({
-                status_code: 200,
+            logger.info(`User with email: ${student.email} successfully logged in.`);
+            let status_code = 200;
+            return res.status(status_code).json({
+                status_code: status_code,
                 message: 'Successfully, logged in to your account.',
                 data: {}
             });
         }
         else{
             logger.warn(`Username or Password is incorrect for email: ${email}`);
-            return res.status(400).json({
-                status_code: 400,
-                message: 'Username or Password is incorrect.',
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: `Username or Password is incorrect`,
                 data: {}
             });
         }
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -473,16 +510,18 @@ exports.logoutStudent = async (req, res) => {
         let logout = req.session.destroy();
 
         logger.info(`User successfully logged out.`);
-        return res.status(200).json({
-            status_code: 200,
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
             message: 'Successfully, logged out of your account.',
             data: {}
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }

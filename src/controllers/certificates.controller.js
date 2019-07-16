@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const path = require('path');
 const randomstring = require('randomstring');
 
@@ -44,9 +45,10 @@ exports.uploadGradeSheetSem1 = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -85,9 +87,10 @@ exports.uploadInstiCertificate = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -126,9 +129,10 @@ exports.uploadNonInstiCertificate = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -167,9 +171,10 @@ exports.uploadGradeSheetMOOC = async (req, res) => {
 
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
@@ -181,9 +186,10 @@ exports.viewCertificates = async (req, res) => {
         const student = await Student.findOne({email: email}).select('certificates applicationNumber -_id').exec();
         
         logger.info(`Successfully retrieved certificate details for email: ${student.email}`);
-        return res.status(200).json({
-            status_code: 200,
-            message: 'Success',
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {
                 applicationNumber: student.applicationNumber,
                 certificates: student.certificates
@@ -191,9 +197,10 @@ exports.viewCertificates = async (req, res) => {
         });
     } catch(error){
         logger.error(error.toString());
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString(),
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
             data: {}
         });
     }
