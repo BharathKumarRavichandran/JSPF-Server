@@ -39,7 +39,8 @@ module.exports = {
 		archive: {
 			format: 'zip',
 			mimeType: 'application/zip'
-		}
+		},
+		mentorsList : path.join(__dirname, 'mentorsList.json')
 	},
 	key: {
 		SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
