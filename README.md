@@ -23,12 +23,13 @@ Backend for Jitheshraj Scholarship Portal Form.
     * Set `BASE_DIR` and `CLIENT_BASE_DIR` to your appropriate directories path to configure file uploads.
     * Set the `DATE` and `YEAR` variables in their respective formats. You won't be able to access certain routes without this.
 5. Copy contents of `src/config/google_auth_credentials.example.json` to a new file `src/config/google_auth_credentials.json` and set all the parameters and configure accordingly in Google developer console to give Google Drive API upload/write access.
-6. Start `MongoDB` service - `sudo service mongod start` 
-7. Start application and kue server - `node index`
-8. Open a new terminal and start kue workers - `node /src/workers`
-9. Instead, to start both servers and workers - `./run_server.sh`
-10. Access kue API and dashboard from http://localhost at its configured _port_ number. Or at http://localhost:5000/api and http://localhost:5000/kue respectively, by default.
-11. Install _JSPF-Web_ if needed, from [BharathKumarRavichandran/JSPF-Web](https://github.com/BharathKumarRavichandran/JSPF-Web)
+6. Copy contents of `src/config/mentorsList.example.json` to a new file `src/config/mentorsList.json` and add all the mentors details.
+7. Start `MongoDB` service - `sudo service mongod start` 
+8. Start application and kue server - `node index`
+9. Open a new terminal and start kue workers - `node /src/workers`
+10. Instead, to start both servers and workers - `./run_server.sh`
+11. Access kue API and dashboard from http://localhost at its configured _port_ number. Or at http://localhost:5000/api and http://localhost:5000/kue respectively, by default.
+12. Install _JSPF-Web_ if needed, from [BharathKumarRavichandran/JSPF-Web](https://github.com/BharathKumarRavichandran/JSPF-Web)
 
 #### Troubleshooting
 * If you face some version incompatability issues while installing/running, check your `node` and `npm` versions and ensure it is compatible with the project. (Tip: Use nvm :p)
