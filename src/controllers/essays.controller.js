@@ -1,4 +1,5 @@
 const path = require('path');
+const sanitize = require('mongo-sanitize');
 const randomstring = require('randomstring');
 
 // Importing config/env variables
@@ -8,6 +9,7 @@ const logger = require('../config/winston');
 const Student = require('../models/student.model');
 
 //Importing utils
+const mentorsUtil = require('../utils/mentors.util');
 const Uploader = require('../utils/upload.util');
 
 
@@ -25,9 +27,16 @@ exports.sendSOPToMentors = async (req, res) => {
         const sopLink = sanitize(req.body.sopLink);
         let student = await Student.findOne({email: email}).exec();
         student.essays.mentors.sop = sopLink;
+
+        let submissionType = 'Statement of purpose';
+        let mailJobs = await mentorsUtil.createMailJobs(student.personalInfo.name, sopLink, submissionType);
+        if(mailJobs.status_code!=200){
+            throw(mailJobs.message);
+        }
+
         await student.save();
         
-        logger.info(`Successfully saved SOP link for email: ${student.email}`);
+        logger.info(`Successfully created mailing jobs and saved SOP link for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -59,9 +68,16 @@ exports.sendCommunityToMentors = async (req, res) => {
         const communityLink = sanitize(req.body.communityLink);
         let student = await Student.findOne({email: email}).exec();
         student.essays.mentors.community = communityLink;
+        
+        let submissionType = `'For the community' essay`;
+        let mailJobs = await mentorsUtil.createMailJobs(student.personalInfo.name, communityLink, submissionType);
+        if(mailJobs.status_code!=200){
+            throw(mailJobs.message);
+        }
+        
         await student.save();
         
-        logger.info(`Successfully saved community essay link for email: ${student.email}`);
+        logger.info(`Successfully created mailing jobs and saved community essay link for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',
@@ -93,9 +109,16 @@ exports.sendSocietyToMentors = async (req, res) => {
         const societyLink = sanitize(req.body.societyLink);
         let student = await Student.findOne({email: email}).exec();
         student.essays.mentors.society = societyLink;
+        
+        let submissionType = `'For the society' essay`;
+        let mailJobs = await mentorsUtil.createMailJobs(student.personalInfo.name, societyLink, submissionType);
+        if(mailJobs.status_code!=200){
+            throw(mailJobs.message);
+        }
+        
         await student.save();
         
-        logger.info(`Successfully saved society essay link for email: ${student.email}`);
+        logger.info(`Successfully created mailing jobs and saved society essay link for email: ${student.email}`);
         return res.status(200).json({
             status_code: 200,
             message: 'Success',

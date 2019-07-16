@@ -9,6 +9,7 @@ const logger = require('../config/winston');
 const Student = require('../models/student.model');
 
 //Importing utils
+const mentorsUtil = require('../utils/mentors.util');
 const Uploader = require('../utils/upload.util');
 
 
@@ -27,9 +28,16 @@ exports.sendDocLink = async (req, res) => {
         let docLink = sanitize(req.body.docLink);
         const student = await Student.findOne({email: email}).exec();
         student.abstract.docLink = docLink;
+
+        let submissionType = 'Project Abstract';
+        let mailJobs = await mentorsUtil.createMailJobs(student.personalInfo.name, docLink, submissionType);
+        if(mailJobs.status_code!=200){
+            throw(mailJobs.message);
+        }
+        
         await student.save();
         
-        logger.info(`Successfully saved abstract's doc link for email: ${student.email}.`);
+        logger.info(`Successfully created mailing jobs and saved abstract's doc link for email: ${student.email}.`);
         return res.status(200).json({
             status_code: 200,
             message: `Successfully saved abstract's doc link`,
