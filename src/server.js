@@ -84,7 +84,10 @@ app.use(expressValidator({
 app.use(session({
 	secret: SESSION_SECRET,
 	resave: true,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie: { 
+		maxAge: new Date( Date.now() + (1000 * 60 * 60) ) // 1 Hour 
+	}
 }));
 
 
