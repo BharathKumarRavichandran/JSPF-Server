@@ -505,6 +505,46 @@ exports.loginStudent = async (req, res) => {
     }
 }
 
+exports.checkSession = async (req, res) => {
+    try{
+        if(!req.query.email || !validator.isEmail(req.query.email)){
+            logger.warn('Invalid parameters');
+            let status_code = 400;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
+                data: {}
+            });
+        }
+        
+        let isLoggedIn = false;
+        if (req.session.student && req.session.student.email) {
+            if(req.session.student.email == req.query.email){
+                logger.info(`${req.session.student.email} student logged in`);
+                isLoggedIn = true;
+            }
+        }
+
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {
+                isLoggedIn: isLoggedIn
+            }
+        });
+
+    } catch(error) {
+        logger.error(error.toString());
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {}
+        });
+    }
+}
+
 exports.logoutStudent = async (req, res) => {
     try{
         let logout = req.session.destroy();

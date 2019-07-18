@@ -21,6 +21,9 @@ router.post('/insti-email/verification-code/verify', checkStudentSession, checkI
 router.post('/password/forgot', studentController.forgotPassword);
 router.post('/password/reset', studentController.resetPassword);
 
+// Session routes
+router.get('/session/check', studentController.checkSession);
+
 // Auth routes
 router.post('/register', studentController.registerStudent);
 router.post('/login', studentController.loginStudent);
