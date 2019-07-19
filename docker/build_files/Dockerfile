@@ -1,14 +1,17 @@
-FROM node:12-alpine
+FROM node:8-alpine
+
+RUN apk update && \
+    apk add nano
 
 ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY ./package*.json ./
 RUN npm install --only=production
 COPY . ./
 
 EXPOSE 5000
 EXPOSE 8000
 
-CMD ./run_server.sh
+CMD ["./scripts/node_app_entry.sh"]

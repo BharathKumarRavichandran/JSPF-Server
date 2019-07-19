@@ -8,6 +8,7 @@ const logger = require('./config/winston');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const sgMail = require('@sendgrid/mail');
 const signale = require('signale');
 
@@ -51,7 +52,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true })
 		signale.warn('Could not connect to Database. Exiting now...');
 		process.exit();
 	});
-let db = mongoose.connection;
+let dbConnection = mongoose.connection;
 
 // Initialize body-parser middleware
 app.use(bodyParser.json(), cors(corsOptions));
@@ -83,10 +84,13 @@ app.use(expressValidator({
 // Initialize express-session to allow us track the logged-in user across sessions.
 app.use(session({
 	secret: SESSION_SECRET,
+	store: new MongoStore({
+		mongooseConnection: mongoose.connection
+	}),
 	resave: true,
 	saveUninitialized: false,
 	cookie: { 
-		maxAge: new Date( Date.now() + (1000 * 60 * 60) ) // 1 Hour 
+		maxAge: (1000 * 60 * 60) // 1 Hour 
 	}
 }));
 

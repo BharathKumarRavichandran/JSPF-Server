@@ -1,5 +1,5 @@
 // Start app server
-require('./src/server').start();
+require('./src/server.js').start();
 
 // Start kue server
-require('./src/kue.server').start();
+require('./src/kue.server.js').start();

@@ -1,12 +1,19 @@
 const fs = require('fs');
 const HttpStatus = require('http-status-codes');
 const kue = require('kue');
-const queue = kue.createQueue();
 const logger = require('../config/winston');
 
 // Importing configuration/env variables
 const config = require('../config/config');
 
+// Connections
+const queue = kue.createQueue({
+    prefix: 'q',
+    redis: {
+        port: config.redis.PORT,
+        host: config.redis.HOST
+    }
+});
 
 exports.createMailJobs = async (studentName, docLink, submissionType) => {
     try {

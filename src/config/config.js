@@ -59,6 +59,10 @@ module.exports = {
 		APP_PORT: process.env.APP_PORT,
 		KUE_PORT: process.env.KUE_PORT
 	},
+	redis: {
+		HOST: process.env.REDIS_HOST,
+		PORT: process.env.REDIS_PORT
+	},
 	session: {
 		secretString: process.env.SESSION_SECRET
 	},

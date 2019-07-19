@@ -2,12 +2,20 @@ const express = require('express');
 const kue = require('kue');
 const ui = require('kue-ui');
 const signale = require('signale');
-const queue = kue.createQueue();
 
 const app = express();
 
 // Importing configuration file
 const config = require('./config/config');
+
+// Connections
+const queue = kue.createQueue({
+    prefix: 'q',
+    redis: {
+        port: config.redis.PORT,
+        host: config.redis.HOST
+    }
+});
 
 // env/config variables
 const KUE_PORT = config.ports.KUE_PORT || 5000;

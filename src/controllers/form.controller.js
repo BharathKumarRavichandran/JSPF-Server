@@ -1,6 +1,5 @@
 const HttpStatus = require('http-status-codes');
 const kue = require('kue');
-const queue = kue.createQueue();
 const path = require('path');
 const randomstring = require('randomstring');
 
@@ -14,6 +13,15 @@ const Student = require('../models/student.model');
 // Importing utils
 const formUtil = require('../utils/form.util');
 const pdfUtil = require('../utils/pdf.util');
+
+// Connections
+const queue = kue.createQueue({
+    prefix: 'q',
+    redis: {
+        port: config.redis.PORT,
+        host: config.redis.HOST
+    }
+});
 
 
 exports.formAccess = async (req, res) => {

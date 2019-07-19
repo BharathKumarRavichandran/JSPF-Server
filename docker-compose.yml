@@ -2,33 +2,34 @@ version: '3'
 
 services:
 
-  	mongodb:
-		image: 'mongo'
-		container_name: JSPF-Mongo
-		volumes:
-		- './docker/data/mongodb:/data/db'
-		ports:
-		- '27017:27017'
+  redis:
+    image: redis:3.0-alpine
+    container_name: jspf-redis
+    command: redis-server
+    volumes:
+    - './docker/data/redis:/data'
+    ports:
+    - "6379:6379"
 
-	redis:
-		image: redis
-		volumes:
-		- './docker/data/redis:/data'
-		ports:
-		- "6379:6379"
+  mongodb:
+    image: 'mongo'
+    container_name: jspf-mongo
+    volumes:
+    - './docker/data/mongodb:/data/db'
+    ports:
+    - '27017:27017'
 
-  	server:
-		build:
-			context: ./
-			dockerfile: Dockerfile
-		container_name: JSPF-Server
-		volumes:
-      	- ./docker/storage:/usr/src/app/storage
-		env_file:
-		- .env
-		ports:
-		- '5000:5000'
-		- '8000:8000'
-		depends_on:
-		- mongodb
-		- redis
+  node_app:
+    build:
+      context: ./
+      dockerfile: ./docker/build_files/Dockerfile
+    container_name: jspf-server
+    restart: always
+    volumes:
+        - ./docker/storage:/usr/src/app/storage
+    ports:
+    - '5000:5000'
+    - '8000:8000'
+    depends_on:
+    - mongodb
+    - redis

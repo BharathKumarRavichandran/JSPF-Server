@@ -1,6 +1,5 @@
 const kue = require('kue');
 const path = require('path');
-const queue = kue.createQueue();
 
 // Importing config/env variables
 const config = require('../config/config');
@@ -10,6 +9,15 @@ const logger = require('../config/winston');
 const archiveUtil = require('../utils/archive.util');
 const googleDriveUtil = require('../utils/googleDrive.util');
 const sendgridMailUtil = require('../utils/sendgridMail.util');
+
+// Connections
+const queue = kue.createQueue({
+    prefix: 'q',
+    redis: {
+        port: config.redis.PORT,
+        host: config.redis.HOST
+    }
+});
 
 
 queue.on('error', (error) => {
