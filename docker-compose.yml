@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  nginx:
+    image: nginx:1.12.2
+    container_name: jspf_nginx
+    depends_on:
+    - node_app
+    volumes:
+    - ./docker/nginx:/etc/nginx/conf.d
+    - ./docker/logs:/var/log/nginx
+    restart: always
+    # ports:
+    # - "6800:80"
 
   redis:
     image: redis:3.0-alpine
