@@ -2,15 +2,23 @@
 
 sleep 2
 
-echo "#######################################"
+echo ""
+echo ""
 
-echo "Starting kue workers!!!"
+echo " ###############################################"
+echo ""
+echo "    *****   Entering node_app_entry     ***** "
+echo "    *****     Starting kue workers      ***** "
+
 nohup node ./src/workers/index.js &
 
-echo "#######################################"
-
-echo "Starting the Node App ....."
-# echo "Hosting locally on :- " $(hostname -I)
+echo "    ***** Starting the Node application *****"
 node ./index.js -b 0.0.0.0:8000
+echo ""
+echo " ###############################################"
+echo ""
+echo ""
 
-echo "Exiting app .... ";
+echo "    *****         Exiting app           ***** "
+echo " ###############################################"
+echo ""
