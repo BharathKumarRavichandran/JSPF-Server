@@ -12,7 +12,7 @@ const googleDriveUtil = require('../utils/googleDrive.util');
 const sendgridMailUtil = require('../utils/sendgridMail.util');
 
 
-queue.on('error', (err) => {
+queue.on('error', (error) => {
     logger.error(error.toString());
 });
 
