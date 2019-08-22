@@ -1,6 +1,6 @@
 exports.getAllPendingRequirements = (student) => {
 
-    let necessaryRequirements = this.getNecessaryPendingRequirements(student);
+    let necessaryRequirements = this.getNecessaryPendingRequirements(student).necessaryRequirements;
 
     // Personal Information
     let personalInformation = new Array();
