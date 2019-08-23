@@ -27,20 +27,26 @@ exports.uploadGradeSheetSem1 = async (req, res) => {
         let fileUploader = new Uploader(req,student.applicationNumber,fileOptions);
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
-        if(uploadResponse.status_code==200){
-            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
-            student.certificates.gradeSheetSem1 = location;
-            await student.save();
-            logger.info(`Successfully uploaded GradeSheetSem1 for email: ${student.email}`);
-        }
-        else{
+        if(uploadResponse.status_code!=200){
             logger.warn(uploadResponse.message);
+            return res.status(uploadResponse.status_code).json({
+                status_code: uploadResponse.status_code,
+                message: uploadResponse.message,
+                data: {}
+            });
+    
         }
+        let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
+        student.certificates.gradeSheetSem1 = location;
+        await student.save();
+        logger.info(`Successfully uploaded GradeSheetSem1 for email: ${student.email}`);
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
             message: uploadResponse.message,
-            data: {}
+            data: {
+                filePath: student.certificates.gradeSheetSem1
+            }
         });
 
     } catch(error){
@@ -69,20 +75,27 @@ exports.uploadInstiCertificate = async (req, res) => {
         let fileUploader = new Uploader(req,student.applicationNumber,fileOptions);
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
-        if(uploadResponse.status_code==200){
-            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
-            student.certificates.instiCertificate = location;
-            await student.save();
-            logger.info(`Successfully uploaded institute certificate for email: ${student.email}`);
-        }
-        else{
+        if(uploadResponse.status_code!=200){
             logger.warn(uploadResponse.message);
+            return res.status(uploadResponse.status_code).json({
+                status_code: uploadResponse.status_code,
+                message: uploadResponse.message,
+                data: {}
+            });
         }
+
+        let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
+        student.certificates.instiCertificate = location;
+        await student.save();
+        logger.info(`Successfully uploaded institute certificate for email: ${student.email}`);
+
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
             message: uploadResponse.message,
-            data: {}
+            data: {
+                filePath: student.certificates.instiCertificate
+            }
         });
 
     } catch(error){
@@ -111,20 +124,26 @@ exports.uploadNonInstiCertificate = async (req, res) => {
         let fileUploader = new Uploader(req,student.applicationNumber,fileOptions);
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
-        if(uploadResponse.status_code==200){
-            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
-            student.certificates.nonInstiCertificate = location;
-            await student.save();
-            logger.info(`Successfully uploaded non-institute certificate for email: ${student.email}`);
-        }
-        else{
+        if(uploadResponse.status_code!=200){
             logger.warn(uploadResponse.message);
+            return res.status(uploadResponse.status_code).json({
+                status_code: uploadResponse.status_code,
+                message: uploadResponse.message,
+                data: {}
+            });
         }
+
+        let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
+        student.certificates.nonInstiCertificate = location;
+        await student.save();
+        logger.info(`Successfully uploaded non-institute certificate for email: ${student.email}`);
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
             message: uploadResponse.message,
-            data: {}
+            data: {
+                filePath: student.certificates.nonInstiCertificate
+            }
         });
 
     } catch(error){
@@ -153,20 +172,26 @@ exports.uploadGradeSheetMOOC = async (req, res) => {
         let fileUploader = new Uploader(req,student.applicationNumber,fileOptions);
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
-        if(uploadResponse.status_code==200){
-            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
-            student.certificates.gradeSheetMOOC = location;
-            await student.save();
-            logger.info(`Successfully uploaded GradeSheetMOOC for email: ${student.email}`);
-        }
-        else{
+        if(uploadResponse.status_code!=200){
             logger.warn(uploadResponse.message);
+            return res.status(uploadResponse.status_code).json({
+                status_code: uploadResponse.status_code,
+                message: uploadResponse.message,
+                data: {}
+            });
         }
+
+        let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
+        student.certificates.gradeSheetMOOC = location;
+        await student.save();
+        logger.info(`Successfully uploaded GradeSheetMOOC for email: ${student.email}`);
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
             message: uploadResponse.message,
-            data: {}
+            data: {
+                filePath: student.certificates.gradeSheetMOOC
+            }
         });
 
     } catch(error){

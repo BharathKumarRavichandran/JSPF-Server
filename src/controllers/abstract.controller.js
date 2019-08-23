@@ -71,20 +71,26 @@ exports.uploadFinalAbstract = async (req, res) => {
         let fileUploader = new Uploader(req,student.applicationNumber,fileOptions);
         let uploadResponse = await fileUploader.uploadSingle(req,res,fieldName);
 
-        if(uploadResponse.status_code==200){
-            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
-            student.abstract.projectAbstract = location;
-            await student.save();
-            logger.info(`Successfully uploaded project abstract for email: ${student.email}`);
-        }
-        else{
+        if(uploadResponse.status_code!=200){
             logger.warn(uploadResponse.message);
+            return res.status(uploadResponse.status_code).json({
+                status_code: uploadResponse.status_code,
+                message: uploadResponse.message,
+                data: {}
+            });
         }
+
+        let location = path.join('uploads',student.applicationNumber,uploadResponse.data.file.filename);
+        student.abstract.projectAbstract = location;
+        await student.save();
+        logger.info(`Successfully uploaded project abstract for email: ${student.email}`);
                 
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
             message: uploadResponse.message,
-            data: {}
+            data: {
+                filePath: student.abstract.projectAbstract
+            }
         });
 
     } catch(error){
@@ -117,24 +123,30 @@ exports.uploadSupportingFiles = async (req, res) => {
         let fileUploader = new Uploader(req,student.applicationNumber,fileOptions);
         let uploadResponse = await fileUploader.uploadMulti(req,res,fieldDetails);
 
-        if(uploadResponse.status_code==200){
-            var locationArray = new Array();
-            for(let i=0;i<fieldDetails.maxCount;i++){
-                let location = path.join('uploads',student.applicationNumber,uploadResponse.data.files[i].filename);
-                locationArray.push(location);
-            }
-            student.abstract.supportingFiles = locationArray;
-            await student.save();
-            logger.info(`Successfully uploaded project supporting files for email: ${student.email}`);
-        }
-        else {
+        if(uploadResponse.status_code!=200){
             logger.warn(uploadResponse.message);
+            return res.status(uploadResponse.status_code).json({
+                status_code: uploadResponse.status_code,
+                message: uploadResponse.message,
+                data: {}
+            });
         }
+
+        var locationArray = new Array();
+        for(let i=0;i<fieldDetails.maxCount;i++){
+            let location = path.join('uploads',student.applicationNumber,uploadResponse.data.files[i].filename);
+            locationArray.push(location);
+        }
+        student.abstract.supportingFiles = locationArray;
+        await student.save();
+        logger.info(`Successfully uploaded project supporting files for email: ${student.email}`);
         
         return res.status(uploadResponse.status_code).json({
             status_code: uploadResponse.status_code,
             message: uploadResponse.message,
-            data: {}
+            data: {
+                filesPath: student.abstract.supportingFiles
+            }
         });
 
     } catch(error){
