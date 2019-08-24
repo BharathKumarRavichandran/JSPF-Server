@@ -42,7 +42,7 @@ exports.sendSOPToMentors = async (req, res) => {
         let status_code = 200;
         return res.status(status_code).json({
             status_code: status_code,
-            message: HttpStatus.getStatusText(status_code),
+            message: 'Successfully sent to mentors!',
             data: {}
         });
 
@@ -86,7 +86,7 @@ exports.sendCommunityToMentors = async (req, res) => {
         let status_code = 200;
         return res.status(status_code).json({
             status_code: status_code,
-            message: HttpStatus.getStatusText(status_code),
+            message: 'Successfully sent to mentors!',
             data: {}
         });
 
@@ -130,7 +130,7 @@ exports.sendSocietyToMentors = async (req, res) => {
         let status_code = 200;
         return res.status(status_code).json({
             status_code: status_code,
-            message: HttpStatus.getStatusText(status_code),
+            message: 'Successfully sent to mentors!',
             data: {}
         });
 
