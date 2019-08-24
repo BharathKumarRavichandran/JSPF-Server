@@ -32,6 +32,7 @@ module.exports = {
 		LOGS_DIR: path.join(BASE_DIR, 'storage', 'logs'),
 		PUBLIC_DIR: path.join(process.env.CLIENT_BASE_DIR, 'public'),
 		SRC_DIR: path.join(BASE_DIR, 'src'),
+		APP_STATIC_DIR: path.join(BASE_DIR, 'public'),
 		UPLOADS_DIR: path.join(process.env.CLIENT_BASE_DIR, 'public', 'uploads')
 	},
 	environment: process.env.environment,

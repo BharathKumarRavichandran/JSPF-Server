@@ -30,7 +30,7 @@ exports.generatePdf = async (student,ejsPath,destinationFilePath) => {
         let compiledEJS = await ejs.compile(fs.readFileSync(ejsPath, 'utf8'),compileOptions);
         let html = await compiledEJS({
             student: student,
-            PUBLIC_DIR: config.directory.PUBLIC_DIR,
+            PUBLIC_DIR: config.directory.APP_STATIC_DIR,
             START_YEAR: config.date.START_YEAR,
             END_YEAR: config.date.END_YEAR
         });
