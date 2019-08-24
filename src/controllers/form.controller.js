@@ -200,7 +200,7 @@ exports.submitForm = async (req, res) => {
         student.archive.final = finalArchiveFilePath;
         await student.save();
 
-        student = await Student.findOne({email: email}).select('-_id -__v -verificationCode -isVerified1 -isVerified2 -password -createdAt -updatedAt').exec();
+        student = await Student.findOne({email: email}).select('-verificationCode -isVerified1 -isVerified2 -password -createdAt -updatedAt').exec();
     
         // Archive summary application and attach to mail
         let summaryArchiveJob = await queue.create('archiveSummary', {
