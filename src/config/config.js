@@ -7,7 +7,6 @@ const BASE_DIR = __dirname + '/./../../';
 
 dotenv.config(
 	{
-		debug: process.env.DEBUG.toLowerCase()=='true' ? true : false,
 		path: __dirname + '/./../../.env'
 	}
 );
@@ -25,6 +24,7 @@ module.exports = {
 		END_YEAR: process.env.END_YEAR
 	},
 	debug: process.env.DEBUG.toLowerCase()=='true' ? true : false,
+	maintenance: process.env.MAINTENANCE.toLowerCase()=='true' ? true : false,
 	directory: {
 		BASE_DIR: BASE_DIR,
 		CLIENT_BASE_DIR: process.env.CLIENT_BASE_DIR,
