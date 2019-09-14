@@ -1,7 +1,9 @@
 FROM node:8-alpine
 
 RUN apk update && \
-    apk add nano
+    apk add vim && \
+    apk add nano && \
+    apk add wkhtmltopdf
 
 ENV NODE_ENV=production
 

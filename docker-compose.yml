@@ -26,7 +26,8 @@ services:
     container_name: jspf-server
     restart: always
     volumes:
-        - ./docker/storage:/usr/src/app/storage
+        - ./storage/logs:/usr/src/app/storage/logs
+        - ../JSPF-Web/public/uploads:/usr/src/app/public/uploads
     ports:
     - '5000:5000'
     - '8000:8000'
