@@ -133,7 +133,7 @@ exports.uploadSupportingFiles = async (req, res) => {
         }
 
         var locationArray = new Array();
-        for(let i=0;i<fieldDetails.maxCount;i++){
+        for(let i=0;i<uploadResponse.data.files.length;i++){
             let location = path.join('uploads',student.applicationNumber,uploadResponse.data.files[i].filename);
             locationArray.push(location);
         }
