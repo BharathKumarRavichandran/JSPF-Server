@@ -1,13 +1,14 @@
 FROM node:8-alpine
 
-RUN apk update && \
-    apk add vim && \
-    apk add nano && \
-    apk add wkhtmltopdf
+WORKDIR /usr/src/app
+
+COPY ./scripts ./scripts
+RUN ./scripts/install_packages.sh
+
+RUN Xvfb :1 -screen 0 800x600x24&
+RUN Xvfb :99 -ac &
 
 ENV NODE_ENV=production
-
-WORKDIR /usr/src/app
 
 COPY ./package*.json ./
 RUN npm install --only=production
