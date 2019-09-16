@@ -81,7 +81,33 @@ exports.getApplicationNumber = async (req, res) => {
     }
 }
 
-exports.viewApplication = async (req, res) => {
+exports.getFormStatus = async (req, res) => {
+    try {
+        const email = req.session.student.email;
+        let student = await Student.findOne({email: email}).exec();
+
+        logger.info(`Successfully, retrieved application form status.`);
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {
+                applicationNumber: student.applicationNumber,
+                submissionStatus: student.isSubmitted
+            }
+        });
+    } catch(error){
+        logger.error(error.toString());
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {}
+        });
+    }
+}
+
+exports.generateApplication = async (req, res) => {
     try{
         const email = req.session.student.email;
         let student = await Student.findOne({email: email}).exec();
@@ -154,6 +180,42 @@ exports.viewApplication = async (req, res) => {
             }
         });
 
+    } catch(error){
+        logger.error(error.toString());
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {}
+        });
+    }
+}
+
+exports.viewApplication = async (req, res) => {
+    try {
+        const email = req.session.student.email;
+        let student = await Student.findOne({email: email}).exec();
+
+        if(!student.isSubmitted){
+            logger.info('Forbidden: Application can only be viewed after form submission.');
+            let status_code = 403;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: `Application can only be viewed after form submission.`,
+                data: {}
+            });
+        }
+
+        logger.info(`Successfully, retrieved application form location.`);
+        let status_code = 200;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {
+                applicationNumber: student.applicationNumber,
+                applicationFilePath: student.applicationFilePath
+            }
+        });
     } catch(error){
         logger.error(error.toString());
         let status_code = 500;

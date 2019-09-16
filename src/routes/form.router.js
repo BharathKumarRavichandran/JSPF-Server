@@ -11,8 +11,12 @@ const checkAccountActivation = authMiddleware.checkAccountActivation;
 router.get('/access', formController.formAccess);
 router.get('/application-number', formController.getApplicationNumber);
 
+// Form status routes
+router.get('/status', checkAccountActivation, formController.getFormStatus);
+
 // Final form submission routes
-router.post('/view', checkAccountActivation, formController.viewApplication);
+router.post('/generate', checkAccountActivation, formController.generateApplication);
+router.get('/view', checkAccountActivation, formController.viewApplication);
 router.post('/submit', checkAccountActivation, formController.submitForm);
 
 module.exports = router;
