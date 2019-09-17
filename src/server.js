@@ -25,9 +25,9 @@ const SESSION_SECRET = config.session.secretString;
 // Database connection options
 let dbConnectionOptions = {
 	dbName: config.mongodb.DB_NAME,
-    reconnectTries: Number.MAX_SAFE_INTEGER,
-    useNewUrlParser: true,
-    useCreateIndex: true
+    	reconnectTries: Number.MAX_SAFE_INTEGER,
+    	useNewUrlParser: true,
+    	useCreateIndex: true
 };
 
 
