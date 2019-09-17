@@ -22,12 +22,25 @@ const config = require('./config/config');
 const APP_PORT = config.ports.APP_PORT || 8000;
 const SESSION_SECRET = config.session.secretString;
 
+// Database connection options
+let dbConnectionOptions = {
+	dbName: config.mongodb.DB_NAME,
+    reconnectTries: Number.MAX_SAFE_INTEGER,
+    useNewUrlParser: true,
+    useCreateIndex: true
+};
+
+
 // Setting MONGODB_URI
-let MONGODB_URI = `mongodb://${mongodb.DB_HOST}:${mongodb.DB_PORT}/${mongodb.DB_NAME}`;
-// Update MONGODB_URI if database authenication is enabled
+let MONGODB_URI = `mongodb://${config.mongodb.DB_HOST}:${config.mongodb.DB_PORT}/${config.mongodb.DB_NAME}`;
+
+// Update db params if database authenication is enabled
 if(config.mongodb.DB_AUTH_ENABLED){
-	const mongodb = config.mongodb;
-	MONGODB_URI = `mongodb://${mongodb.DB_USERNAME}:${mongodb.DB_PASSWORD}@${mongodb.DB_HOST}:${mongodb.DB_PORT}/${mongodb.DB_NAME}?authSource=${DB_AUTH_SOURCE}`;
+	MONGODB_URI = `mongodb://${config.mongodb.DB_USERNAME}:${config.mongodb.DB_PASSWORD}@${config.mongodb.DB_HOST}:${config.mongodb.DB_PORT}/${config.mongodb.DB_NAME}?authSource=${config.mongodb.DB_AUTH_SOURCE}`;
+	
+	// Adding DB credentials
+	dbConnectionOptions.user = config.mongodb.DB_USERNAME;
+	dbConnectionOptions.pass = config.mongodb.DB_PASSWORD;
 }
 
 // Adding options for CORS middleware
@@ -50,7 +63,7 @@ app.use(morgan('combined', { stream: logger.stream }));
 
 // Database connection
 mongoose.Promise = global.Promise;
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true })
+mongoose.connect(MONGODB_URI, dbConnectionOptions)
 	.then(() => {
 		signale.success('*****Database Connection Successfull******');
 	}).catch(error => {

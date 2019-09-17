@@ -54,7 +54,7 @@ module.exports = {
 	mongodb: {
 		DB_HOST: process.env.DB_HOST,
 		DB_PORT: process.env.DB_PORT,
-		DB_AUTH_ENABLED: process.env.DB_AUTH_ENABLED,
+		DB_AUTH_ENABLED: process.env.DB_AUTH_ENABLED.toLowerCase()=='true' ? true : false,
 		DB_AUTH_SOURCE: process.env.DB_AUTH_SOURCE,
 		DB_NAME: process.env.DB_NAME,
 		DB_USERNAME: process.env.DB_USERNAME,
