@@ -20,12 +20,19 @@ const config = require('./config/config');
 
 // env/config variables
 const APP_PORT = config.ports.APP_PORT || 8000;
-const MONGODB_URI = config.mongodb.DB_URI;
 const SESSION_SECRET = config.session.secretString;
+
+// Setting MONGODB_URI
+let MONGODB_URI = `mongodb://${mongodb.DB_HOST}:${mongodb.DB_PORT}/${mongodb.DB_NAME}`;
+// Update MONGODB_URI if database authenication is enabled
+if(config.mongodb.DB_AUTH_ENABLED){
+	const mongodb = config.mongodb;
+	MONGODB_URI = `mongodb://${mongodb.DB_USERNAME}:${mongodb.DB_PASSWORD}@${mongodb.DB_HOST}:${mongodb.DB_PORT}/${mongodb.DB_NAME}?authSource=${DB_AUTH_SOURCE}`;
+}
 
 // Adding options for CORS middleware
 const corsOptions = {
-	origin: config.url.CORS_ORIGIN,
+	origin: config.url.CLIENT_BASE_URL,
 	methods: ['GET', 'PUT', 'POST', 'DELETE'],
 	credentials: true
 };

@@ -19,7 +19,6 @@ Backend for Jitheshraj Scholarship Portal Form.
     * Get and set `SENDGRID_API_KEY` to access application mailing routes
     * `API_BASE_URL = 'http://localhost:8000'`
     * `CLIENT_BASE_URL = 'http://localhost:3000'`
-    * `CORS_ORIGIN = 'http://localhost:3000'`
     * Set `BASE_DIR` and `CLIENT_BASE_DIR` to your appropriate directories path to configure file uploads.
     * Set the `DATE` and `YEAR` variables in their respective formats. You won't be able to access certain routes without this.
 5. Copy contents of `src/config/google_auth_credentials.example.json` to a new file `src/config/google_auth_credentials.json` and set all the parameters and configure accordingly in Google developer console to give Google Drive API upload/write access.
