@@ -14,6 +14,8 @@ services:
   mongodb:
     image: 'mongo'
     container_name: jspf-mongo
+    env_file:
+    - './docker/mongo/.env'
     volumes:
     - './docker/data/mongodb:/data/db'
     ports:
