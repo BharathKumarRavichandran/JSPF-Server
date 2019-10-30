@@ -2,6 +2,10 @@ var bcrypt = require('bcryptjs');
 var sanitize = require('mongo-sanitize');
 
 
+exports.checkPasswordRule = async(password) => {
+    return (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&'()"+,-./:;<=>^_`|{}~])[A-Za-z\d@$!%*#?&'()"+,-./:;<=>^_`|{}~]{8,}$/).test(password);
+}
+
 exports.hashPassword = async(password) => {
     try {
         password = sanitize(password);

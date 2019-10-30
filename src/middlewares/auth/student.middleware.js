@@ -1,4 +1,8 @@
+const HttpStatus = require('http-status-codes');
 const validator = require('validator');
+
+// Importing config/env variables
+const logger = require('../../config/winston');
 
 // Importing models
 const Student = require('../../models/student.model');
@@ -8,36 +12,63 @@ exports.checkStudentSession = (req, res, next) => {
         if (req.session.student && req.session.student.email) {
             return next();
         } 
-        return res.status(400).json({
-            status_code: 400,
-            message: 'Unauthorised access'
+
+        logger.info('Unauthorised access');
+        let status_code = 401;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: 'Unauthorised access',
+            data: {}
         });
     } catch(error) {
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString()
+        logger.error(error.toString());
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {}
         });
     }
 }
 
 exports.checkAccountInactivation = async(req, res, next) => {
     try {
-        if(!req.body.email || !validator.isEmail(req.body.email)){
-            throw Error('Invalid parameters');
+        
+        let email = null;
+        
+        if(req.method=='GET')
+            email = req.query.email;
+        else if(req.method=='POST')
+            email = req.body.email;
+   
+        if(!email || !validator.isEmail(email)){
+            logger.warn('Invalid parameters');
+            let status_code = 401;
+            return res.status(status_code).json({
+                status_code: status_code,
+                message: HttpStatus.getStatusText(status_code),
+                data: {}
+            });
         }
-        const email = req.body.email;
         let student = await Student.findOne({email: email}).exec();
         if(!student || !student.isVerified1){
             return next();
         }
-        return res.status(400).json({
-            status_code: 400,
-            message: 'Primary email is already verified.'
+
+        logger.info(`Primary email already verified for email: ${email}`);
+        let status_code = 400;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: 'Primary email is already verified.',
+            data: {}
         });
     } catch(error){
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString()
+        logger.error(error.toString());
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {}
         });
     }
 }
@@ -49,14 +80,21 @@ exports.checkInstiVerificationAccess = async(req, res, next) => {
         if(student.isVerified1 && !student.isVerified2){
             return next();
         }
-        return res.status(400).json({
-            status_code: 400,
-            message: 'Cant access the required resource.'
+
+        logger.info(`Already verified or Requested resource is blocked for email: ${email}`);
+        let status_code = 401;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: `Can't access the required resource.`,
+            data: {}
         });
     } catch(error){
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString()
+        logger.error(error.toString());
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {}
         });
     }
 }
@@ -68,14 +106,21 @@ exports.checkAccountActivation = async(req, res, next) => {
         if(student.isVerified1 && student.isVerified2){
             return next();
         }
-        return res.status(400).json({
-            status_code: 400,
-            message: 'Please complete institute email verification'
+
+        logger.info(`Requested resource is blocked for email: ${email}`);
+        let status_code = 401;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: 'Please complete institute email verification',
+            data: {}
         });
     } catch(error){
-        return res.status(400).json({
-            status_code: 400,
-            message: error.toString()
+        logger.error(error.toString());
+        let status_code = 500;
+        return res.status(status_code).json({
+            status_code: status_code,
+            message: HttpStatus.getStatusText(status_code),
+            data: {}
         });
     }
 }

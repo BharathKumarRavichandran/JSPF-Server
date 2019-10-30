@@ -17,3 +17,7 @@ exports.checkEmptyInput = (req) => {
     );
     return bool;
 }
+
+exports.checkEduEmail = (email) => {
+    return (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.+-]+\.edu$/).test(email);
+}

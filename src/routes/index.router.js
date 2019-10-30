@@ -20,7 +20,7 @@ router.use('/abstract', checkStudentSession, checkAccountActivation, abstractRou
 router.use('/auth', authRouter);
 router.use('/certificates', checkStudentSession, checkAccountActivation, certificatesRouter);
 router.use('/essays', checkStudentSession, checkAccountActivation, essaysRouter);
-router.use('/form', checkStudentSession, checkAccountActivation, formRouter);
+router.use('/form', checkStudentSession, formRouter);
 router.use('/personal-info', checkStudentSession, checkAccountActivation, personalInfoRouter);
 router.use('/requirements', checkStudentSession, checkAccountActivation, requirementsRouter);
 router.use('/signature', checkStudentSession, checkAccountActivation, signatureRouter);

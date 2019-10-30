@@ -7,8 +7,9 @@ const abstractController = require('../controllers/abstract.controller');
 const deadlineMiddleware = require('../middlewares/deadline.middleware');
 
 // Student's abstracts routes
-router.post('/mentors', deadlineMiddleware.sendToMentorsDeadline, abstractController.uploadDocLink);
-router.post('/final/upload', deadlineMiddleware.finalProjectDeadline, abstractController.uploadFinalAbstract);
-router.post('/final/view', abstractController.viewAbstract);
+router.post('/mentors/send', deadlineMiddleware.sendToMentorsDeadline, abstractController.sendDocLink);
+router.post('/final-abstract/upload', deadlineMiddleware.finalProjectDeadline, abstractController.uploadFinalAbstract);
+router.post('/supporting-files/upload', deadlineMiddleware.finalProjectDeadline, abstractController.uploadSupportingFiles);
+router.get('/final/view/all', abstractController.viewAbstract);
 
 module.exports = router;

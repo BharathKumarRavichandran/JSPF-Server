@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Jitheshraj Scholarship Application Form</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/personalInfo.css" />
+    <style>
+
+    @font-face {
+        font-family: "Montserrat-Regular";
+        src: url("<%=`${PUBLIC_DIR}/fonts/Montserrat/Montserrat-Regular.ttf`%>")  format('truetype');
+    }
+
+    @font-face {
+        font-family: "Montserrat-Black";
+        src: url("<%=`${PUBLIC_DIR}/fonts/Montserrat/Montserrat-Black.ttf`%>")  format('truetype');
+    }
+
+    @font-face {
+        font-family: "Montserrat-Bold";
+        src: url("<%=`${PUBLIC_DIR}/fonts/Montserrat/Montserrat-Bold.ttf`%>")  format('truetype');
+    }
+
+    @font-face {
+        font-family: "Montserrat-SemiBold";
+        src: url("<%=`${PUBLIC_DIR}/fonts/Montserrat/Montserrat-SemiBold.ttf`%>")  format('truetype');
+    }
+
+    @font-face {
+        font-family: "Montserrat-Medium";
+        src: url("<%=`${PUBLIC_DIR}/fonts/Montserrat/Montserrat-Medium.ttf`%>")  format('truetype');
+    }
+
+    @font-face {
+        font-family: "Montserrat-Light";
+        src: url("<%=`${PUBLIC_DIR}/fonts/Montserrat/Montserrat-Light.ttf`%>")  format('truetype');
+    }
+
+    body {
+        font-family: "Montserrat-Medium", sans-serif;
+        padding: 7px;
+    }
+
+    .application-head {
+        font-family: "Montserrat-Bold", sans-serif;
+        text-align: center;
+        font-size: 38px;
+        letter-spacing: 1px;
+    }
+
+    .application-sub-head {
+        margin-top: 20px;
+        font-family: "Montserrat-Bold", sans-serif;
+        text-align: center;
+        font-size: 38px;
+        letter-spacing: 1px;
+    }
+
+    .fields-section {
+        margin: 60px 0px;
+    }
+
+    .field {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .sub-field {
+        font-style: italic;
+        font-size: 17px;
+    }
+
+    .key {
+        font-family: "Montserrat-SemiBold", sans-serif;
+        font-size: 27px;
+    }
+
+    .value {
+        font-family: "Montserrat-Regular", sans-serif;
+        font-size: 22px;
+        overflow-wrap: break-word;
+        page-break-inside: avoid !important;
+    }
+
+    .certificate-head {
+        text-align: center;
+        font-family: "Montserrat-SemiBold", sans-serif;
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+
+    .image-wrapper {
+        width: 750px;
+        height: 1020px;
+        text-align: center;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    .certificate-image {
+        max-width: 750px;
+        max-height: 1020px;
+        max-height: 100%;  
+        max-width: 100%; 
+        width: auto;
+        height: auto;
+        position: absolute;  
+        top: 0;  
+        bottom: 0;  
+        left: 0;  
+        right: 0;  
+        margin: auto;
+    }
+
+    .rotate240 {
+        -webkit-transform: rotate(90deg);
+    }
+
+    .page-break-before {
+        page-break-before: always;
+    }
+
+    .page-break-inside {
+        page-break-inside: always;
+    }
+
+    .page-break-after {
+        page-break-after: always;
+    }
+
+    .page-break {
+        display: block;
+        page-break-before: always;
+        margin-top: 20px;
+    }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="application-head">Jitheshraj Scholarship <%= START_YEAR +"-"+ END_YEAR %></div>
+        <div class="application-sub-head">Application Form</div>
+    </div>
+    <div class="fields-section">
+        <div>
+            <div class="field">
+                <span class="key">Application Number: </span>
+                <span class="value"><%= student.applicationNumber %></span>
+            </div>
+            <div class="field">
+                <span class="key">Name: </span>
+                <span class="value"><%= student.personalInfo.name %></span>
+            </div>
+            <div class="field">
+                <span class="key">Roll Number: </span>
+                <span class="value"><%= student.personalInfo.rollNumber %></span>
+            </div>
+            <div class="field">
+                <span class="key">Department: </span>
+                <span class="value"><%= student.personalInfo.department %></span>
+            </div>
+            <div class="field">
+                <span class="key">Preferred pronoun: </span>
+                <span class="value"><%= student.personalInfo.pronoun %></span>
+            </div>
+            <div class="field">
+                <span class="key">T-Shirt Size: </span>
+                <span class="value"><%= student.personalInfo.tshirtSize %></span>
+            </div>
+            <div class="field">
+                <span class="key">Signature <span class="sub-field">(Full Name)</span>: </span>
+                <span class="value"><%= student.signature %></span>
+            </div>
+            <div class="field">
+                <span class="key">Introduction: </span>
+                <span class="value"><%= student.personalInfo.introduction %></span>
+            </div>
+                        <div class="field">
+                <span class="key">E-Mail Address <span class="sub-field">(Primary)</span>: </span>
+                <span class="value"><%= student.email %></span>
+            </div>
+            <div class="field">
+                <span class="key">Institude E-Mail Address <span class="sub-field">(Other)</span>: </span>
+                <span class="value"><%= student.instiEmail %></span>
+            </div>
+            <div class="field">
+                <span class="key">Contact Number <span class="sub-field">(Call)</span>: </span>
+                <span id="summa" class="value"><%= student.personalInfo.contactNumberCall %></span>
+            </div>
+            <div class="field">
+                <span id="gm" class="key">Contact Number <span class="sub-field">(Whatsapp)</span>: </span>
+                <span class="value"><%= student.personalInfo.contactNumberWhatsapp %></span>
+            </div>
+        </div>
+        <div class="certificate-page page-break-before">
+            <div class="certificate-head">Scanned copy of the original Semester 1 grade sheet</div>
+            <div class="image-wrapper">
+                <img class="certificate-image" src="<%=`${PUBLIC_DIR}/${student.certificates.gradeSheetSem1}`%>" alt="grade-sheet-sem1">
+            </div>
+        </div>
+        <div class="certificate-page page-break-before">
+            <div class="certificate-head">Scanned copy of your Certificate of Participation or Merit of the
+contest conducted by affiliates of NIT Trichy</div>
+            <div class="image-wrapper">
+                <img class="certificate-image" src="<%=`${PUBLIC_DIR}/${student.certificates.instiCertificate}`%>" alt="Institute Merit Certificate">
+            </div>
+        </div>
+        <div class="certificate-page page-break-before">
+            <div class="certificate-head">Scanned copy of your Certificate of Participation or Merit of the contest conducted by institutes other than NIT Trichy</div>
+            <div class="image-wrapper">
+                <img class="certificate-image" src="<%=`${PUBLIC_DIR}/${student.certificates.nonInstiCertificate}`%>" alt="Non-Institute Merit Certificate">
+            </div>
+        </div>
+        <div class="certificate-page page-break-before">
+            <div class="certificate-head">Screenshot or Original grade sheet of the completed MOOC</div>
+            <div class="image-wrapper">
+                <img class="certificate-image" src="<%=`${PUBLIC_DIR}/${student.certificates.gradeSheetMOOC}`%>" alt="grade-sheet-MOOC">
+            </div>
+        </div>
+    </div>
+    <script>
+        var certImgs = document.getElementsByClassName("certificate-image");
+        for(var i=0;i<certImgs.length;i++){
+            var width = certImgs[i].clientWidth;
+            var height = certImgs[i].clientHeight;
+            if (width>height){
+                certImgs[i].classList.add("rotate90");
+            }
+        }  
+    </script>
+</body>
+</html>

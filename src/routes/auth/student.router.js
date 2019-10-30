@@ -10,18 +10,19 @@ const checkInstiVerificationAccess = authMiddleware.checkInstiVerificationAccess
 const checkAccountInactivation = authMiddleware.checkAccountInactivation;
 
 // Primary email routes
-router.post('/email/send-verification', checkAccountInactivation, studentController.sendVerificationCode);
-router.post('/email/re-send-verification', checkAccountInactivation, studentController.reSendVerificationCode);
-router.post('/email/verify', checkAccountInactivation, studentController.verifyEmail);
+router.post('/email/verification-code/send', checkAccountInactivation, studentController.sendVerificationCode);
+router.get('/email/verification-code/check', checkAccountInactivation, studentController.checkVerificationCode);
 
 // Institute(.edu) email routes
-router.post('/insti-email/send-verification', checkStudentSession, checkInstiVerificationAccess, studentController.sendInstiVerificationCode);
-router.post('/insti-email/re-send-verification', checkStudentSession, checkInstiVerificationAccess, studentController.reSendInstiVerificationCode);
-router.post('/insti-email/verify', checkStudentSession, checkInstiVerificationAccess, studentController.verifyInstiEmail);
+router.post('/insti-email/verification-code/send', checkStudentSession, checkInstiVerificationAccess, studentController.sendInstiVerificationCode);
+router.post('/insti-email/verification-code/verify', checkStudentSession, checkInstiVerificationAccess, studentController.verifyInstiEmail);
 
 // Password routes
 router.post('/password/forgot', studentController.forgotPassword);
 router.post('/password/reset', studentController.resetPassword);
+
+// Session routes
+router.get('/session/check', studentController.checkSession);
 
 // Auth routes
 router.post('/register', studentController.registerStudent);
